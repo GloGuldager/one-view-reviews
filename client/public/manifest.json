@@ -5,10 +5,10 @@
   "manifest_version": 2,
   "author": "Will Abbot, Gloria Guldager, Neha Nautiyal",
   "icons": {
-      "16": "./logos/OneViewLogo16.png",
-      "32": "./logos/OneViewLogo32.png",
-      "48": "./logos/OneViewLogo48.png",
-      "128": "./logos/OneViewLogo128.png"
+      "16": "./logos/OneViewIcon16.png",
+      "32": "./logos/OneViewIcon32.png",
+      "48": "./logos/OneViewIcon48.png",
+      "128": "./logos/OneViewIcon128.png"
   }
 
 }
