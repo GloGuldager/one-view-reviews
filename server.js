@@ -1,8 +1,11 @@
-const express = require("express");
+// load environment properties from a .env file for local development
+require('dotenv').config({ silent: true });
+const express = require('express');
+
+const app = require('./app.js');
 
 const mongoose = require("mongoose");
 const routes = require("./routes");
-const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Define middleware here
