@@ -1,10 +1,53 @@
-chrome.runtime.onMessage.addListener(request => {
-    if (request.type === 'analyzeReviews') {
-        alert("Your reviews have been analyzed");
-        // var url = window.location.search;
-        // alert(url);
-    }
-});
+chrome.runtime.onMessage.addListener(
+    function (request, sender) {
+        if (request.type === 'analyzeReviews') {
+            const rawURL = request.url;
+            console.log(rawURL);
+
+            if (rawURL.includes('/dp/')) {
+                const path = '/dp/';
+                getASIN(rawURL, path);
+            } else if (rawURL.includes('/gp/product/')) {
+                const path = '/gp/product/';
+                getASIN(rawURL, path);
+            } else if (rawURL.includes('/product-reviews/')) {
+                const path = '/product-reviews/';
+                getASIN(rawURL, path);
+            } else {
+                alert("This extension gives results for one Amazon product at a time. Navigate to a product page and try again!")
+            }
+
+
+
+
+        }
+    });
+
+function getASIN(rawURL, path) {
+    const splitASIN = rawURL.split(path)[1];
+    const ASIN = splitASIN.substring(0, 10);
+    console.log(ASIN);
+
+    createQueryURLs(ASIN);
+}
+
+function createQueryURLs(ASIN) {
+    alert(`This product's ASIN code is ${ASIN}`)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // const modal = document.createElement('dialog');
 // modal.setAttribute("style", "height:40%");
