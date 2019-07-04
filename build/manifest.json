@@ -1,12 +1,12 @@
 {
   "name": "OneView Reviews",
   "version": "1.0",
-  "description": "Harnessing IBM Watson for a single, intelligent snap shot of exactly the reviews you’re looking for!.",
+  "description": "Harnessing IBM Watson for a single, intelligent snap shot of exactly the reviews you’re looking for!",
   "manifest_version": 2,
   "author": "Will Abbot, Gloria Guldager, Neha Nautiyal",
   "content_scripts": [{
     "js": [ "content.js"],
-    "matches": [ "<all_urls>"]
+    "matches": [ "https://*.amazon.com/*", "https://*.amazon.ca/*"]
    }],
   "background": {
     "scripts": ["background.js"]
