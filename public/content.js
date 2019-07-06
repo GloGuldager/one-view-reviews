@@ -13,15 +13,15 @@ chrome.runtime.onMessage.addListener(
             } else if (rawURL.includes('/gp/product/')) {
                 const path = '/gp/product/';
                 userInputModal(rawURL, path);
-                
+
             } else if (rawURL.includes('/product-reviews/')) {
                 const path = '/product-reviews/';
                 userInputModal(rawURL, path);
-                
+
             } else if (rawURL.includes('/asin/')) {
                 const path = '/asin/';
                 userInputModal(rawURL, path);
-                
+
             } else {
                 alert("This extension gives results for one Amazon product at a time. Navigate to a product page and try again!")
             }
@@ -112,25 +112,20 @@ function getASIN(rawURL, path, keywords) {
 
 function AJAXRequest(ASIN, keywords) {
     alert("about to post");
-    $.ajax({
-        type: "POST",
-        url: "localhost:3000/api/post",
-        data: {
-            "ASIN": ASIN,
-            "keywords": keywords
-        },
-        success: success,
-        dataType: "json"
-    });
-}
 
-function parseData(data) {
-    alert(data);
-    alert("data came back!")
-}
-
-function success() {
-    alert("post successful");
+    var url = 'http://localhost:3000/api/post';
+    var data = {
+        "ASIN": ASIN,
+        "keywords": keywords
+    };
+    console.log(data);
+    fetch(url, {
+        method: 'POST', // or 'PUT'
+        body: data, // data can be `string` or {object}!
+        mode: 'cors'
+    }).then(response => response.json())
+      .then(data => console.log(data))
+      .catch(error => console.error('Error:', error));
 }
 
 
