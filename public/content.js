@@ -1,6 +1,6 @@
 
 chrome.runtime.onMessage.addListener(
-    function (request, sender) {
+    function (request) {
         if (request.type === 'analyzeReviews') {
             const rawURL = request.url;
 
@@ -9,15 +9,19 @@ chrome.runtime.onMessage.addListener(
             if (rawURL.includes('/dp/')) {
                 const path = '/dp/';
                 userInputModal(rawURL, path);
-                // getASIN(rawURL, path, keywords);
+
             } else if (rawURL.includes('/gp/product/')) {
                 const path = '/gp/product/';
                 userInputModal(rawURL, path);
-                // getASIN(rawURL, path, keywords);
+                
             } else if (rawURL.includes('/product-reviews/')) {
                 const path = '/product-reviews/';
                 userInputModal(rawURL, path);
-                // getASIN(rawURL, path, keywords);
+                
+            } else if (rawURL.includes('/asin/')) {
+                const path = '/asin/';
+                userInputModal(rawURL, path);
+                
             } else {
                 alert("This extension gives results for one Amazon product at a time. Navigate to a product page and try again!")
             }
@@ -28,7 +32,6 @@ chrome.runtime.onMessage.addListener(
 function userInputModal(rawURL, path) {
     const modal = document.createElement('dialog');
     modal.setAttribute("style", "height:350px");
-    // modal.setAttribute("class", "OneViewModal");
     modal.innerHTML =
         `<iframe class="OneViewModal" id="keywordInput" style="height:100%;"></iframe>
             <div class="OneViewModal" style="position:absolute; top:1px; left:1px; padding: 3px; padding-top: 2px;">  
@@ -105,9 +108,10 @@ function getASIN(rawURL, path, keywords) {
 }
 
 function AJAXRequest(ASIN, keywords) {
+    alert("about to post");
     $.ajax({
         type: "POST",
-        url: "http://one-view-reviews-api.herokuapp.com/post",
+        url: "http://one-view-reviews-api.herokuapp.com/api/post",
         data: {
             "ASIN": ASIN,
             "keywords": keywords
@@ -118,6 +122,7 @@ function AJAXRequest(ASIN, keywords) {
 }
 
 function parseData(data) {
+    console.log(data);
     alert("data came back!")
 }
 
