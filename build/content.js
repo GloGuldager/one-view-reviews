@@ -62,6 +62,9 @@ function userInputModal(rawURL, path) {
     });
 
     const _formSubmit = () => {
+
+        event.preventDefault();
+
         // alert('submitted');
         const input1 = document.getElementById('1').value;
         const input2 = document.getElementById('2').value;
@@ -111,19 +114,23 @@ function AJAXRequest(ASIN, keywords) {
     alert("about to post");
     $.ajax({
         type: "POST",
-        url: "http://one-view-reviews-api.herokuapp.com/api/post",
+        url: "localhost:3000/api/post",
         data: {
             "ASIN": ASIN,
             "keywords": keywords
         },
-        success: parseData(data),
+        success: success,
         dataType: "json"
     });
 }
 
 function parseData(data) {
-    console.log(data);
+    alert(data);
     alert("data came back!")
+}
+
+function success() {
+    alert("post successful");
 }
 
 
