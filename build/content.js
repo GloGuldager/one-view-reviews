@@ -85,7 +85,7 @@ function userInputModal(rawURL, path) {
 
 
     const _cancelClick = event => {
-        console.log(event.target);
+        // console.log(event.target);
         if (!(event.target.className === "OneViewModal")) {
             dialog.close();
             removeListeners();
@@ -99,7 +99,6 @@ function userInputModal(rawURL, path) {
         dialog.querySelector("form").removeEventListener("submit", _formSubmit);
     }
 }
-
 
 function getASIN(rawURL, path, keywords) {
     const splitASIN = rawURL.split(path)[1];
@@ -118,27 +117,23 @@ function AJAXRequest(ASIN, keywords) {
         "ASIN": ASIN,
         "keywords": keywords
     };
-    console.log(data);
+
+    var formData = new FormData();
+    formData.append('ASIN', ASIN);
+    formData.append('keywords', keywords);
+
+    // console.log(data);
     fetch(url, {
         method: 'POST', // or 'PUT'
-        body: data, // data can be `string` or {object}!
-        // headers: {
-        //     'Content-Type': 'application/json'
-        // },
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: JSON.stringify(data), // data can be `string` or {object}!
         mode: 'cors'
     }).then(response => response.json())
       .then(data => console.log(data))
       .catch(error => console.error('Error:', error));
 }
-
-// function parseData(data) {
-//     alert(data);
-//     alert("data came back!")
-// }
-
-// function success() {
-//     alert("post successful");
-// }
 
 
 
