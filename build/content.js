@@ -128,7 +128,7 @@ function AJAXRequest(ASIN, keywords) {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: JSON.stringify(data), // data can be `string` or {object}!
+        body: new URLSearchParams(data), // data can be `string` or {object}!
         mode: 'cors'
     }).then(response => response.json())
       .then(data => console.log(data))
