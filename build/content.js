@@ -46,7 +46,7 @@ function userInputModal(rawURL, path) {
                 <input class="OneViewModal" style="margin: 5px;" type="text" name="first" id="1" class="input" value=""><br>
                 <input class="OneViewModal" style="margin: 5px;" type="text" name="second" id="2" class="input" value=""><br>
                 <input class="OneViewModal" style="margin: 5px;" type="text" name="third" id="3" class="input" value=""><br>
-                <input class="OneViewModal" style="margin: 5px; padding: 5px 12px; background-color: #f68c1e; color: white; font-size: 16px;" type="submit" value="Analyze">
+                <input class="OneViewModal" style="margin: 5px; padding: 5px 12px; background-color: #f68c1e; color: white; font-size: 16px; border-radius: 4px" type="submit" value="Analyze">
                 </form>
             </div>`;
     document.body.appendChild(modal);
@@ -118,11 +118,6 @@ function AJAXRequest(ASIN, keywords) {
         "keywords": keywords
     };
 
-    var formData = new FormData();
-    formData.append('ASIN', ASIN);
-    formData.append('keywords', keywords);
-
-    // console.log(data);
     fetch(url, {
         method: 'POST', // or 'PUT'
         headers: {
