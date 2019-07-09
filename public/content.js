@@ -2,6 +2,7 @@
 chrome.runtime.onMessage.addListener(
     function (request) {
         if (request.type === 'analyzeReviews') {
+
             const rawURL = request.url;
 
             // this code evaluates the 
@@ -104,13 +105,13 @@ function getASIN(rawURL, path, keywords) {
     const splitASIN = rawURL.split(path)[1];
     const ASIN = splitASIN.substring(0, 10);
     console.log(ASIN);
-    alert(ASIN + ' / ' + keywords);
+    // alert(ASIN + ' / ' + keywords);
     // createQueryURLs(ASIN);
     AJAXRequest(ASIN, keywords);
 }
 
 function AJAXRequest(ASIN, keywords) {
-    alert("about to post");
+    // alert("about to post");
 
     var url = 'http://localhost:3000/api/post';
     var data = {
@@ -128,7 +129,9 @@ function AJAXRequest(ASIN, keywords) {
     }).then(response => response.json())
       .then(data => console.log(data))
       .catch(error => console.error('Error:', error));
+
+
+    // console.log("should go to printAnalysis now");
+    // chrome.runtime.sendMessage({ type: 'printAnalysis', json: results});
+    // console.log("this is the line after");
 }
-
-
-
