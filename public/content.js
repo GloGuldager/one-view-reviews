@@ -23,6 +23,10 @@ chrome.runtime.onMessage.addListener(
                 const path = '/asin/';
                 userInputModal(rawURL, path);
 
+            } else if (rawURL.includes('/asin/')) {
+                const path = '/gp/aw/d/';
+                userInputModal(rawURL, path);
+
             } else {
                 alert("This extension gives results for one Amazon product at a time. Navigate to a product page and try again!")
             }
@@ -31,8 +35,18 @@ chrome.runtime.onMessage.addListener(
 
 
 function userInputModal(rawURL, path) {
+    dummyReviewArray = [
+        {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
+        {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
+        {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
+        {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
+        {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
+        {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'}
+    ];
+    return printData(82);
     const modal = document.createElement('dialog');
     modal.setAttribute("style", "height:350px");
+    modal.setAttribute("id", "inputModal");
     modal.innerHTML =
         `<iframe class="OneViewModal" id="keywordInput" style="height:100%;"></iframe>
             <div class="OneViewModal" style="position:absolute; top:1px; left:1px; padding: 3px; padding-top: 2px;">  
@@ -51,7 +65,7 @@ function userInputModal(rawURL, path) {
                 </form>
             </div>`;
     document.body.appendChild(modal);
-    const dialog = document.querySelector("dialog");
+    const dialog = document.getElementById("inputModal");
     dialog.showModal();
 
 
@@ -80,13 +94,14 @@ function userInputModal(rawURL, path) {
         if (input3) {
             keywords.push(input3);
         }
+        dialog.close();
+        removeListeners();
         getASIN(rawURL, path, keywords);
     }
     dialog.querySelector("form").addEventListener("submit", _formSubmit);
 
 
     const _cancelClick = event => {
-        // console.log(event.target);
         if (!(event.target.className === "OneViewModal")) {
             dialog.close();
             removeListeners();
@@ -106,7 +121,7 @@ function getASIN(rawURL, path, keywords) {
     const ASIN = splitASIN.substring(0, 10);
     console.log(ASIN);
     // alert(ASIN + ' / ' + keywords);
-    // createQueryURLs(ASIN);
+
     AJAXRequest(ASIN, keywords);
 }
 
@@ -114,11 +129,12 @@ function AJAXRequest(ASIN, keywords) {
     // alert("about to post");
 
     var url = 'http://localhost:3000/api/post';
+    // var url = 'https://one-view-reviews-api.herokuapp.com/api/post';
     var data = {
         "ASIN": ASIN,
         "keywords": keywords
     };
-
+console.log(data);
     fetch(url, {
         method: 'POST', // or 'PUT'
         headers: {
@@ -127,11 +143,130 @@ function AJAXRequest(ASIN, keywords) {
         body: new URLSearchParams(data), // data can be `string` or {object}!
         mode: 'cors'
     }).then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error('Error:', error));
+        .then(data => parseData(data))
+        .catch(error => console.error('Error:', error));
+
+}
+
+function parseData(data) {
+    console.log(data);
+
+    const overallSentiment = data.analysis.sentiment.document.score;
+    const overallScore = Math.floor(overallSentiment * 50 + 50);
+    console.log(overallScore);
+
+    const matchedReviews = data.matchedReviews;
+    // const targetSentiment = [];
+    // const targ = data.sentiment.targets;
+    // // if (targ[0] = "''") {
+    // //     return;
+    // // } else
+    // for (let i = 0; i < targ.length; i++) {
+    //     targetSentiment.push(`{text: ${targ[i].text}, score: ${targ[i].score}}`)
+
+    // }
+    // console.log(targetSentiment);
+
+    printData(overallScore, matchedReviews);
+}
+
+function printData(score, matchedReviews) {
+
+    // dummyReviewArray = [
+    //     {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
+    //     {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
+    //     {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
+    //     {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
+    //     {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
+    //     {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'}
+    // ];
+
+    let printModal = document.createElement("dialog");
+    printModal.setAttribute("id", "printModal");
+    printModal.innerHTML =
+        `<iframe class="OneViewModal" id="printIFrame" style="height:100%;"></iframe>
+            <div id="exitButtonDiv" class="OneViewModal">  
+                <button class="OneViewModal" id="exitButton">x</button>
+            </div>
+        <div class="OneViewModal" id="container">
+            <div class="OneViewModal" id="header" class="OneViewModal">
+                <div class="OneViewModal" id="logo">
+                    <img class="OneViewModal" src="https://drive.google.com/uc?export=download&id=1e7eAPsvTk66LsrWIaSbbeMqZYOOarXdl" alt="OneView Logo">
+                </div>
+                <div class="OneViewModal" id="notes">
+                    <h6 class="OneViewModal">* Based on sentiment scores from IBM Watson</h6>
+                    <h6 class="OneViewModal">** Score of 50 is neutral</h6>
+                </div>
+            </div>
+
+            <div class="OneViewModal" id="resultsContainer">
+
+                <div class="OneViewModal" id="overallScore">
+                    <h1 class="OneViewModal" id="score">Overall Score: ${score}</h1>
+                    <div class="OneViewModal" id="chart">
+                        <img class="OneViewModal" src="https://drive.google.com/uc?export=download&id=1e7eAPsvTk66LsrWIaSbbeMqZYOOarXdl" alt="OneView Logo">
+                    </div>
+                </div>
+
+                <div class="OneViewModal" id="sentimentReturns">
+
+                </div>
+
+                <div class="OneViewModal" id="topReviews">
+                </div>
+
+                <div class="OneViewModal" id="userActions">
+                <button>'Save Reviews'</button>
+                </div>
+            </div>
+        </div>`;
+    document.body.appendChild(printModal);
+    const thisModal = document.getElementById('printModal');
+    // const thisModal = document.getElementById('printModalTest');
+    thisModal.showModal();
+
+
+    const iframe = document.getElementById("printIFrame");
+    iframe.frameBorder = 0;
+
+    // let reviews = [];
+    // for (let i = 0; i < dummyReviewArray.length; i++) {
+    for (let i = 0; i < matchedReviews.length; i++) {
+        const titleDiv = document.createElement('div');
+        titleDiv.setAttribute('class', 'reviewTitles');
+        // titleDiv.append(dummyReviewArray[i].title);
+        titleDiv.append(matchedReviews[i].reviewTitle);
+
+        const reviewDiv = document.createElement('div');
+        reviewDiv.setAttribute('class', 'reviewText');
+        // reviewDiv.append(dummyReviewArray[i].review);
+        reviewDiv.append(matchedReviews[i].reviewText);
+        const rev = document.getElementById("topReviews");
+        rev.append(titleDiv);
+        rev.append(reviewDiv);
+    }
+
+    thisModal.querySelector("button").addEventListener("click", () => {
+        thisModal.close();
+    });
+    const _cancelClick = event => {
+        if (!(event.target.className === "OneViewModal")) {
+            thisModal.close();
+            removeListeners();
+        }
+    }
+    document.body.addEventListener("click", _cancelClick);
+
+
+    function removeListeners() {
+        document.body.removeEventListener("click", _cancelClick);
+    }
+}
+
+
 
 
     // console.log("should go to printAnalysis now");
     // chrome.runtime.sendMessage({ type: 'printAnalysis', json: results});
     // console.log("this is the line after");
-}
+

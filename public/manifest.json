@@ -5,6 +5,7 @@
   "manifest_version": 2,
   "author": "Will Abbot, Gloria Guldager, Neha Nautiyal",
   "content_scripts": [{
+    "css": ["modals.css"],
     "js": ["content.js", "printAnalysis.js"],
     "matches": [ "https://*.amazon.com/*"],
     "run_at": "document_start"
