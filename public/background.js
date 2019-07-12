@@ -4,6 +4,10 @@ chrome.contextMenus.create({
     contexts: ['all']
 });
 
+chrome.browserAction.onClicked.addListener(function() {
+    chrome.tabs.create({url: 'index.html'});
+  });
+
 chrome.contextMenus.onClicked.addListener(() => {
     
     chrome.tabs.query({ active: true, currentWindow: true }, tabs => {

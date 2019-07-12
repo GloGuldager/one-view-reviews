@@ -37,13 +37,13 @@ chrome.runtime.onMessage.addListener(
 function userInputModal(rawURL, path) {
     dummyReviewArray = [
         {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
-        {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
+        {'reviewTitle': 'This is amazing!', 'reviewText': 'Amazing donut revenge never saw me coming left on Polaski Highway all the way to heaven if several small discombobulated loners never once said hi when they went to sleep I could never live it down no never live it down know let me be.'},
         {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
         {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
         {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
         {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'}
     ];
-    return printData(82);
+    return printData(82, dummyReviewArray);
     const modal = document.createElement('dialog');
     modal.setAttribute("style", "height:350px");
     modal.setAttribute("id", "inputModal");
@@ -213,6 +213,8 @@ function printData(score, matchedReviews) {
                 </div>
 
                 <div class="OneViewModal" id="topReviews">
+                    <div class="OneViewModal" id="scrollDiv">
+                    </div>
                 </div>
 
                 <div class="OneViewModal" id="userActions">

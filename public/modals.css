@@ -2,7 +2,7 @@
     width: 600px;
     /* height: 90%; */
     /* max-height: 800px; */
-    height: 700px;
+    height: 600px;
 }
 
 #container {
@@ -57,7 +57,7 @@
     width: 580px;
     /* height: 100%; */
     /* max-height: 650px; */
-    height: 550px;
+    height: 450px;
     /* padding-bottom: 20px; */
     background-color: lightpink; 
 }
@@ -86,6 +86,7 @@
     background-color: lightslategray;
 }
 
+/* the div with all the reviews, child divs for Titles and Text that are populated dynamically in content.js */
 #topReviews {
     grid-column: 1 / -1;
     background-color: lightgreen;
@@ -93,11 +94,9 @@
     padding-top: 5px;
     overflow: auto;
 }
-
-#userActions {
-    grid-column: 1 / -1;
-    background-color: lightblue;
-}
+/* #scrollDiv {
+    min-height: 101%;
+} */
 
 .reviewTitles {
     font-size: 22px;
@@ -108,4 +107,44 @@
     font-size: 18px;
     padding: 10px;
     padding-top: 0px;
+}
+/* ------------------------------------------------------------------------------- */
+
+#userActions {
+    grid-column: 1 / -1;
+    background-color: lightblue;
+}
+
+
+@media screen and (min-height: 800px) {
+    #printModal {
+        height: 650px;
+    }
+    #resultsContainer {
+        height: 500px;
+    }
+}
+@media screen and (min-height: 850px) {
+    #printModal {
+        height: 700px;
+    }
+    #resultsContainer {
+        height: 550px;
+    }
+}
+@media screen and (min-height: 950px) {
+    #printModal {
+        height: 775px;
+    }
+    #resultsContainer {
+        height: 625px;
+    }
+}
+@media screen and (min-height: 1050px) {
+    #printModal {
+        height: 825px;
+    }
+    #resultsContainer {
+        height: 675px;
+    }
 }
