@@ -35,15 +35,18 @@ chrome.runtime.onMessage.addListener(
 
 
 function userInputModal(rawURL, path) {
-    dummyReviewArray = [
-        {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
-        {'reviewTitle': 'This is amazing!', 'reviewText': 'Amazing donut revenge never saw me coming left on Polaski Highway all the way to heaven if several small discombobulated loners never once said hi when they went to sleep I could never live it down no never live it down know let me be.'},
-        {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
-        {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
-        {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
-        {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'}
-    ];
-    return printData(82, dummyReviewArray);
+    //toggle this path on if you want to bypass the server and just work on dummy data in the Results Modal
+
+    // dummyReviewArray = [
+    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
+    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'Amazing donut revenge never saw me coming left on Polaski Highway all the way to heaven if several small discombobulated loners never once said hi when they went to sleep I could never live it down no never live it down know let me be.' },
+    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
+    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
+    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
+    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' }
+    // ];
+    // return printData(82, dummyReviewArray);
+
     const modal = document.createElement('dialog');
     modal.setAttribute("style", "height:350px");
     modal.setAttribute("id", "inputModal");
@@ -134,7 +137,7 @@ function AJAXRequest(ASIN, keywords) {
         "ASIN": ASIN,
         "keywords": keywords
     };
-console.log(data);
+    console.log(data);
     fetch(url, {
         method: 'POST', // or 'PUT'
         headers: {
@@ -171,15 +174,6 @@ function parseData(data) {
 }
 
 function printData(score, matchedReviews) {
-
-    // dummyReviewArray = [
-    //     {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
-    //     {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
-    //     {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
-    //     {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
-    //     {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'},
-    //     {'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!'}
-    // ];
 
     let printModal = document.createElement("dialog");
     printModal.setAttribute("id", "printModal");
@@ -218,7 +212,7 @@ function printData(score, matchedReviews) {
                 </div>
 
                 <div class="OneViewModal" id="userActions">
-                <button>'Save Reviews'</button>
+                <button id="saveButton">'OAuth Check Console'</button>
                 </div>
             </div>
         </div>`;
@@ -231,37 +225,64 @@ function printData(score, matchedReviews) {
     const iframe = document.getElementById("printIFrame");
     iframe.frameBorder = 0;
 
-    // let reviews = [];
-    // for (let i = 0; i < dummyReviewArray.length; i++) {
     for (let i = 0; i < matchedReviews.length; i++) {
         const titleDiv = document.createElement('div');
-        titleDiv.setAttribute('class', 'reviewTitles');
-        // titleDiv.append(dummyReviewArray[i].title);
+        titleDiv.setAttribute('class', 'OneViewModal reviewTitles');
         titleDiv.append(matchedReviews[i].reviewTitle);
 
         const reviewDiv = document.createElement('div');
-        reviewDiv.setAttribute('class', 'reviewText');
-        // reviewDiv.append(dummyReviewArray[i].review);
+        reviewDiv.setAttribute('class', 'OneViewModal reviewText');
         reviewDiv.append(matchedReviews[i].reviewText);
+
         const rev = document.getElementById("topReviews");
         rev.append(titleDiv);
         rev.append(reviewDiv);
     }
 
-    thisModal.querySelector("button").addEventListener("click", () => {
-        thisModal.close();
-    });
-    const _cancelClick = event => {
-        if (!(event.target.className === "OneViewModal")) {
+   
+    // this function will deal with OAuth when users click the "save review" button. Not yet functional
+
+    // function checkAuth () {
+    //     chrome.identity.getAuthToken({ interactive: true }, function (token) {
+    //         let init = {
+    //             method: 'GET',
+    //             async: true,
+    //             headers: {
+    //                 Authorization: 'Bearer ' + token,
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             'contentType': 'json'
+    //         };
+    //         fetch(
+    //             'https://people.googleapis.com/v1/contactGroups/all?maxMembers=20&key=AIzaSyAHYnp3DtHiWgWvkWmbuvdf_91C5c-Dga0',
+    //             init)
+    //             .then((response) => response.json())
+    //             .then(function (data) {
+    //                 console.log(data)
+    //             });
+    //     });
+    // }
+
+    const _parseClick = event => {
+
+        console.log(event.target);
+        if (event.target.id === "exitButton") {
+            thisModal.close();
+            removeListeners();
+        }
+        else if (event.target.id === "saveButton") {
+            checkAuth();
+        }
+        else if (!(event.target.className === "OneViewModal" || event.target.className === "OneViewModal reviewTitles" || event.target.className === "OneViewModal reviewText")) {
             thisModal.close();
             removeListeners();
         }
     }
-    document.body.addEventListener("click", _cancelClick);
+    document.body.addEventListener("click", _parseClick);
 
 
     function removeListeners() {
-        document.body.removeEventListener("click", _cancelClick);
+        document.body.removeEventListener("click", _parseClick);
     }
 }
 

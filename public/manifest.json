@@ -4,8 +4,8 @@
   "description": "Harnessing IBM Watson for a single intelligent snapshot of exactly the reviews you’re looking for!",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAl95hLgmnKFP0WIoRJ0mv9Ec4Vu7stHqy0kPQ2goQz7OKGWn3z9V5d+N1gmFksx0XXAddA2AXCByiqm+qNyQ+M8svSWF+J0KKpHnAJOU+qBbLnAY3OCFSfLScNmp0nmIN4Vb8qXQxQ5X0XbQjnlE0SKeyaDzly/BzpnltCvxVX71Tis4RMuAploy18Vjp8FHC/fjN9gkRvzNTkLBnJYvj5LecmRvz9gBpBiKOxO3/bcyA9wVBkPf8ciiQ7r1IcOszE3SE6AUFPTioki+3d+7hqF5Rerz25yHVv/7gtaC8IKUlmm17myQMF9rSXV8JB2ISGYySH1I5IVzn+KlzW5M0HwIDAQAB",
   "oauth2": {
-    "client_id": "500110467175-fv6uc58iv7piq89u4u5a9uapj6btg6is.apps.googleusercontent.com",
-    "scopes": [""]
+    "client_id": "458319819512-jubl3m6h2qp937dugnklrjulalfd3dnc.apps.googleusercontent.com",
+    "scopes": ["https://www.googleapis.com/auth/contacts.readonly"]
   },
   "manifest_version": 2,
   "author": "Will Abbot, Gloria Guldager, Neha Nautiyal",
