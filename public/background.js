@@ -4,9 +4,10 @@ chrome.contextMenus.create({
     contexts: ['all']
 });
 
-chrome.browserAction.onClicked.addListener(function() {
-    chrome.tabs.create({url: 'index.html'});
-  });
+// Toggle this function on for testing the OAuth and off for testing normal functionality
+// chrome.browserAction.onClicked.addListener(function() {
+//     chrome.tabs.create({url: 'index.html'});
+//   });
 
 chrome.contextMenus.onClicked.addListener(() => {
     
