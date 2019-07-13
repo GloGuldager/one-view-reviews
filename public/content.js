@@ -37,15 +37,15 @@ chrome.runtime.onMessage.addListener(
 function userInputModal(rawURL, path) {
     //toggle this path on if you want to bypass the server and just work on dummy data in the Results Modal
 
-    // dummyReviewArray = [
-    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
-    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'Amazing donut revenge never saw me coming left on Polaski Highway all the way to heaven if several small discombobulated loners never once said hi when they went to sleep I could never live it down no never live it down know let me be.' },
-    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
-    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
-    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
-    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' }
-    // ];
-    // return printData(82, dummyReviewArray);
+    dummyReviewArray = [
+        { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
+        { 'reviewTitle': 'A totally different title!', 'reviewText': 'Amazing donut revenge never saw me coming left on Polaski Highway all the way to heaven if several small discombobulated loners never once said hi when they went to sleep I could never live it down no never live it down know let me be.' },
+        { 'reviewTitle': 'This is what it looks like if somebody puts way too much text in the title!', 'reviewText': 'And nothing in body.' },
+        { 'reviewTitle': 'Ok', 'reviewText': 'This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. ' },
+        { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
+        { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' }
+    ];
+    return printData(82, dummyReviewArray);
 
     const modal = document.createElement('dialog');
     modal.setAttribute("style", "height:350px");
@@ -193,28 +193,24 @@ function printData(score, matchedReviews) {
                 </div>
             </div>
 
-            <div class="OneViewModal" id="resultsContainer">
 
-                <div class="OneViewModal" id="overallScore">
-                    <h1 class="OneViewModal" id="score">Overall Score: ${score}</h1>
-                    <div class="OneViewModal" id="chart">
-                        <img class="OneViewModal" src="https://drive.google.com/uc?export=download&id=1e7eAPsvTk66LsrWIaSbbeMqZYOOarXdl" alt="OneView Logo">
-                    </div>
-                </div>
-
-                <div class="OneViewModal" id="sentimentReturns">
-
-                </div>
-
-                <div class="OneViewModal" id="topReviews">
-                    <div class="OneViewModal" id="scrollDiv">
-                    </div>
-                </div>
-
-                <div class="OneViewModal" id="userActions">
-                <button id="saveButton">'OAuth Check Console'</button>
-                </div>
+            <div class="OneViewModal" id="overallScore">
+                <h1 class="OneViewModal" id="scoreText">Overall Score:</h1>
+                <div class="OneViewModal" id="scoreValue">${score}</div>
             </div>
+
+            <div class="OneViewModal" id="chart">
+                <canvas id="myChart" width="80px" height="80px"></canvas>
+            </div>
+               
+            <div class="OneViewModal" id="watsonReturns"></div>
+
+            <div class="OneViewModal" id="topReviews"></div>
+
+            <div class="OneViewModal" id="save">
+                <button id="saveButton">Save Results</button>
+            </div>
+
         </div>`;
     document.body.appendChild(printModal);
     const thisModal = document.getElementById('printModal');
@@ -225,21 +221,32 @@ function printData(score, matchedReviews) {
     const iframe = document.getElementById("printIFrame");
     iframe.frameBorder = 0;
 
-    for (let i = 0; i < matchedReviews.length; i++) {
-        const titleDiv = document.createElement('div');
-        titleDiv.setAttribute('class', 'OneViewModal reviewTitles');
-        titleDiv.append(matchedReviews[i].reviewTitle);
+    addReviews();
+    function addReviews() {
 
-        const reviewDiv = document.createElement('div');
-        reviewDiv.setAttribute('class', 'OneViewModal reviewText');
-        reviewDiv.append(matchedReviews[i].reviewText);
+        const allReviewContainer = document.createElement('div');
+        allReviewContainer.setAttribute('class', 'OneViewModal');
+        allReviewContainer.setAttribute('id', 'allReviewContainer');
+
+        for (let i = 0; i < matchedReviews.length; i++) {
+
+            const titleDiv = document.createElement('div');
+            titleDiv.setAttribute('class', 'OneViewModal reviewTitles');
+            titleDiv.append(matchedReviews[i].reviewTitle);
+
+            const reviewDiv = document.createElement('div');
+            reviewDiv.setAttribute('class', 'OneViewModal reviewText');
+            reviewDiv.append(matchedReviews[i].reviewText);
+
+            allReviewContainer.appendChild(titleDiv);
+            allReviewContainer.appendChild(reviewDiv);
+        }
 
         const rev = document.getElementById("topReviews");
-        rev.append(titleDiv);
-        rev.append(reviewDiv);
+        rev.appendChild(allReviewContainer);
     }
 
-   
+
     // this function will deal with OAuth when users click the "save review" button. Not yet functional
 
     // function checkAuth () {
@@ -263,19 +270,20 @@ function printData(score, matchedReviews) {
     //     });
     // }
 
+    function exitReset() {
+        thisModal.close();
+        removeListeners();
+        const reviews = document.getElementById("allReviewContainer");
+        reviews.parentNode.removeChild(reviews);
+    }
     const _parseClick = event => {
 
         console.log(event.target);
-        if (event.target.id === "exitButton") {
-            thisModal.close();
-            removeListeners();
+        if (event.target.id === "saveButton") {
+            // checkAuth();
         }
-        else if (event.target.id === "saveButton") {
-            checkAuth();
-        }
-        else if (!(event.target.className === "OneViewModal" || event.target.className === "OneViewModal reviewTitles" || event.target.className === "OneViewModal reviewText")) {
-            thisModal.close();
-            removeListeners();
+        else if (!(event.target.id === "exitButton" || event.target.className === "OneViewModal" || event.target.className === "OneViewModal reviewTitles" || event.target.className === "OneViewModal reviewText")) {
+            exitReset();
         }
     }
     document.body.addEventListener("click", _parseClick);
