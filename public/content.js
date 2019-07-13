@@ -37,15 +37,18 @@ chrome.runtime.onMessage.addListener(
 function userInputModal(rawURL, path) {
     //toggle this path on if you want to bypass the server and just work on dummy data in the Results Modal
 
-    dummyReviewArray = [
-        { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
-        { 'reviewTitle': 'A totally different title!', 'reviewText': 'Amazing donut revenge never saw me coming left on Polaski Highway all the way to heaven if several small discombobulated loners never once said hi when they went to sleep I could never live it down no never live it down know let me be.' },
-        { 'reviewTitle': 'This is what it looks like if somebody puts way too much text in the title!', 'reviewText': 'And nothing in body.' },
-        { 'reviewTitle': 'Ok', 'reviewText': 'This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. ' },
-        { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
-        { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' }
-    ];
-    return printData(82, dummyReviewArray);
+    // dummyTargetResults = [
+    //     {'text':'value', 'score': 67}, {'text':'quality', 'score': 72}, {'text':'uTarget1muchLonger', 'score': 54}, {'text':'uTarget2', 'score': 94}, {'text':'uTarget3', 'score': 17}
+    // ]
+    // dummyReviewArray = [
+    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
+    //     { 'reviewTitle': 'A totally different title!', 'reviewText': 'Amazing donut revenge never saw me coming left on Polaski Highway all the way to heaven if several small discombobulated loners never once said hi when they went to sleep I could never live it down no never live it down now let me be.' },
+    //     { 'reviewTitle': 'This is what it looks like if somebody puts way too much text in the title!', 'reviewText': 'And nothing in body.' },
+    //     { 'reviewTitle': 'Ok', 'reviewText': 'This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. ' },
+    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
+    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' }
+    // ];
+    // return printData(82, dummyReviewArray, dummyTargetResults);
 
     const modal = document.createElement('dialog');
     modal.setAttribute("style", "height:350px");
@@ -158,22 +161,14 @@ function parseData(data) {
     const overallScore = Math.floor(overallSentiment * 50 + 50);
     console.log(overallScore);
 
+    const targetSentiments = data.analysis.sentiment.targets;
+
     const matchedReviews = data.matchedReviews;
-    // const targetSentiment = [];
-    // const targ = data.sentiment.targets;
-    // // if (targ[0] = "''") {
-    // //     return;
-    // // } else
-    // for (let i = 0; i < targ.length; i++) {
-    //     targetSentiment.push(`{text: ${targ[i].text}, score: ${targ[i].score}}`)
 
-    // }
-    // console.log(targetSentiment);
-
-    printData(overallScore, matchedReviews);
+    printData(overallScore, matchedReviews, targetSentiments);
 }
 
-function printData(score, matchedReviews) {
+function printData(score, matchedReviews, targets) {
 
     let printModal = document.createElement("dialog");
     printModal.setAttribute("id", "printModal");
@@ -203,7 +198,9 @@ function printData(score, matchedReviews) {
                 <canvas id="myChart" width="80px" height="80px"></canvas>
             </div>
                
-            <div class="OneViewModal" id="watsonReturns"></div>
+            <div class="OneViewModal" id="watsonReturns">
+
+            </div>
 
             <div class="OneViewModal" id="topReviews"></div>
 
@@ -220,7 +217,7 @@ function printData(score, matchedReviews) {
 
     const iframe = document.getElementById("printIFrame");
     iframe.frameBorder = 0;
-
+    
     addReviews();
     function addReviews() {
 
@@ -244,6 +241,16 @@ function printData(score, matchedReviews) {
 
         const rev = document.getElementById("topReviews");
         rev.appendChild(allReviewContainer);
+    }
+    for (let i = 0; i < targets.length; i++) {
+        const targ = document.createElement('div');
+        targ.setAttribute('class', 'OneViewModal');
+        targ.setAttribute('id', 'target');
+        const rawScore = targets[i].score;
+        const score = Math.floor(rawScore * 50 + 50);
+        targ.append(`${targets[i].text}: ${score}`);
+
+        document.getElementById('watsonReturns').appendChild(targ);     
     }
 
 
