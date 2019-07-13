@@ -7,7 +7,7 @@ body {
 #printModal {
     width: 640px;
     height: 90%;
-    min-height: 600px;
+    min-height: 640px;
     max-height: 850px;
     /* height: 600px; */
 }
@@ -27,7 +27,7 @@ body {
     left: 0px;
     width: 620px;
     height: 100%;
-    min-height: 600px;
+    min-height: 640px;
     max-height: 850px;
     margin: 10px 7px;
     padding-bottom: 20px;
@@ -98,23 +98,31 @@ body {
 
 #chart {
     grid-area: c;
-    background-color: #f68c1e;
+    /* background-color: #f68c1e; */
 }
 
 #watsonReturns {
     grid-area: w;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: space-between;
+    flex-wrap: wrap;
+    overflow-wrap: normal;
+    font-size: 28px;
+    line-height: 1.5rem;
+
     /* background-color: lightslategray; */
 }
 
 /* the div with all the reviews, child divs for Titles and Text that are populated dynamically in content.js */
 #topReviews {
     grid-area: r;
-    border-style: hidden;
-    /* border-width: 1px; */
+    border-style: solid;
+    border-width: 1px;
     border-radius: 10px;
-    /* color: #2b3990; */
-    color: rgb(18, 27, 37);
-    box-shadow: 1px 1px 3px 1px #92949b;
+    border-color: rgba(43,57,144, 0.2);
+    color: rgb(16, 25, 36);
+    /* box-shadow: 1px 1px 3px 1px #92949b;s */
     margin: 0px 10px;
     overflow: auto;
 }
@@ -125,13 +133,20 @@ body {
 .reviewTitles {
     font-size: 22px;
     padding: 10px;
-    line-height: 1.5rem
+    /* margin-left: 15px; */
+    line-height: 1.5rem;
 }
 
 .reviewText {
     font-size: 18px;
-    padding: 10px;
+    padding-bottom: 10px;
+    margin: 0px 10px;
     padding-top: 0px;
+    color: rgba(16, 25, 36, 0.8);
+    line-height: 1.5rem;
+    border-bottom-style: dotted;
+    border-width: 1px;
+    border-color: rgba(43,57,144, 0.2);
 }
 /* ------------------------------------------------------------------------------- */
 
