@@ -7,19 +7,20 @@ body {
 #printModal {
     width: 640px;
     height: 90%;
-    min-height: 640px;
+    min-height: 675px;
     max-height: 850px;
-    /* height: 600px; */
 }
 
 #container {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: 136px 70px 130px auto 40px;
+    grid-template-rows: 120px 60px 20px 20px 160px auto 40px;
     grid-template-areas: 
         "h h h h h h h h h h h h"
-        "c c c c c s s s s s s s"
-        "c c c c c w w w w w w w"
+        "s s s s s s s s s s s s"
+        "d d d d d d d d d d d d"
+        "- - - - - - - - - - - -"
+        "c c c c c c c c c c c c"
         "r r r r r r r r r r r r"
         "u u u u u u u u u u sb sb";
     position: absolute;
@@ -67,7 +68,7 @@ body {
     grid-area: s;
     display: grid;
     grid-gap: 0px;
-    grid-template-columns: 236px auto;
+    grid-template-columns: 260px auto;
     justify-content: center;
     font-weight: 500;
     padding: 10px 20px;
@@ -76,7 +77,7 @@ body {
 #scoreText {
     display: grid;
     color: #00aeef;
-    font-size: 36px;
+    font-size: 40px;
     -webkit-text-fill-color: #00aeef; 
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: #2b3990;
@@ -84,7 +85,7 @@ body {
 }
 #scoreValue {
     display: grid;
-    font-size: 48px;
+    font-size: 52px;
     font-weight: 600;
     color: #f68c1e;
     -webkit-text-fill-color: #f68c1e; /* Will override color (regardless of order) */
@@ -94,25 +95,101 @@ body {
     /* background-color: #00aeef; */
 }
 /* ________________________________________________________________ */
-
-
-#chart {
-    grid-area: c;
-    /* background-color: #f68c1e; */
-}
-
-#watsonReturns {
-    grid-area: w;
+#dataReliability {
+    grid-area: d;
+    text-align: center;
+    font-size: 16px;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    justify-content: space-between;
-    flex-wrap: wrap;
-    overflow-wrap: normal;
-    font-size: 28px;
-    line-height: 1.5rem;
-
-    /* background-color: lightslategray; */
+    grid-gap: 5px;
+    grid-template-columns: auto auto;
+    justify-content: center;
 }
+#dataText {
+    padding-top: 2px;
+}
+#dataScore {
+    color: white;
+    padding: 2px 6px;
+}
+
+
+#chartContainer {
+    grid-area: c;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: auto 290px;
+
+    justify-content: flex-start;
+    margin: 0px 0px 30px 20px;
+}
+#chartContent {
+    /* grid-area: v; */
+    /* background-color: #00aeef; */
+    padding: 30px 10px;
+    display: grid;
+    align-items: flex-end;
+    color: black;
+    font-weight: 900;
+}
+.chartValues {
+    display: grid;
+    grid-template-columns: 20px auto;
+}
+h5 {
+    font-size: 24px;
+}
+#chart {
+    /* grid-area: g; */
+    border-bottom-style: solid;
+    border-color: #2b3990;
+    border-width: 1px;
+    margin-bottom: 31px;
+
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 150px;
+    grid-template-areas: 
+        "x y z p d";
+    justify-content: space-around;
+    align-items: flex-end;
+}
+#chart0text, #chart1text, #chart2text, #chart3text, #chart4text {
+    font-size: 16px;
+    padding: 0px 0px 5px 2px;
+}
+#chart0color, #chart1color, #chart2color, #chart3color, #chart4color {
+    height: 17px;
+    width: 17px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgba(43,57,144, 0.2);
+}
+
+#chart0, #chart1, #chart2, #chart3, #chart4, #chart5 {
+    width: 45px;
+    /* margin-bottom: 1px; */
+    padding-top: 5px;
+    font-size: 24px;
+    color: white;
+    text-align: center;
+}
+#chart0, #chart0color {
+    background-color: rgb(245, 208, 0);
+}
+#chart1, #chart1color {
+    background-color: rgb(50, 170, 50);
+}
+#chart2, #chart2color {
+    background-color: rgb(85, 85, 207);
+}
+#chart3, #chart3color {
+    background-color: rgb(216, 61, 61);
+    /* background-color: rgb(91, 163, 95); */
+}
+#chart4, #chart4color {
+    background-color: rgb(252, 160, 69);
+}
+
 
 /* the div with all the reviews, child divs for Titles and Text that are populated dynamically in content.js */
 #topReviews {
@@ -120,7 +197,7 @@ body {
     border-style: solid;
     border-width: 1px;
     border-radius: 10px;
-    border-color: rgba(43,57,144, 0.2);
+    border-color: rgba(43,57,144, 0.3);
     color: rgb(16, 25, 36);
     /* box-shadow: 1px 1px 3px 1px #92949b;s */
     margin: 0px 10px;

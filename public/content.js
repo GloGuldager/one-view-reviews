@@ -37,18 +37,19 @@ chrome.runtime.onMessage.addListener(
 function userInputModal(rawURL, path) {
     //toggle this path on if you want to bypass the server and just work on dummy data in the Results Modal
 
-    // dummyTargetResults = [
-    //     {'text':'value', 'score': 67}, {'text':'quality', 'score': 72}, {'text':'uTarget1muchLonger', 'score': 54}, {'text':'uTarget2', 'score': 94}, {'text':'uTarget3', 'score': 17}
-    // ]
-    // dummyReviewArray = [
-    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
-    //     { 'reviewTitle': 'A totally different title!', 'reviewText': 'Amazing donut revenge never saw me coming left on Polaski Highway all the way to heaven if several small discombobulated loners never once said hi when they went to sleep I could never live it down no never live it down now let me be.' },
-    //     { 'reviewTitle': 'This is what it looks like if somebody puts way too much text in the title!', 'reviewText': 'And nothing in body.' },
-    //     { 'reviewTitle': 'Ok', 'reviewText': 'This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. ' },
-    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
-    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' }
-    // ];
-    // return printData(82, dummyReviewArray, dummyTargetResults);
+    dummyTargetResults = [
+        {'text':'value', 'score': 0.432}, {'text':'quality', 'score': 0.034}, {'text':'value', 'score': -0.432}, {'text':'quality', 'score': 0.234}, {'text':'longer query', 'score': 0.634}
+    ]
+    dummyReviewArray = [
+        { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
+        { 'reviewTitle': 'A totally different title!', 'reviewText': 'Amazing donut revenge never saw me coming left on Polaski Highway all the way to heaven if several small discombobulated loners never once said hi when they went to sleep I could never live it down no never live it down now let me be.' },
+        { 'reviewTitle': 'This is what it looks like if somebody puts way too much text in the title!', 'reviewText': 'And nothing in body.' },
+        { 'reviewTitle': 'Ok', 'reviewText': 'This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. ' },
+        { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
+        { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' }
+    ];
+    const usage = 37777;
+    // return printData(82, dummyReviewArray, dummyTargetResults, usage);
 
     const modal = document.createElement('dialog');
     modal.setAttribute("style", "height:350px");
@@ -165,10 +166,13 @@ function parseData(data) {
 
     const matchedReviews = data.matchedReviews;
 
-    printData(overallScore, matchedReviews, targetSentiments);
+    const usage = data.analysis.usage.text_characters;
+
+
+    printData(overallScore, matchedReviews, targetSentiments, usage);
 }
 
-function printData(score, matchedReviews, targets) {
+function printData(score, matchedReviews, targets, usage) {
 
     let printModal = document.createElement("dialog");
     printModal.setAttribute("id", "printModal");
@@ -183,23 +187,55 @@ function printData(score, matchedReviews, targets) {
                     <img class="OneViewModal" src="https://drive.google.com/uc?export=download&id=1e7eAPsvTk66LsrWIaSbbeMqZYOOarXdl" alt="OneView Logo">
                 </div>
                 <div class="OneViewModal" id="notes">
-                    <h6 class="OneViewModal">* Based on sentiment scores from IBM Watson</h6>
-                    <h6 class="OneViewModal">** Score of 50 is neutral</h6>
+                    <h4 class="OneViewModal" id="notesTitle" style="display: grid; justify-content: center;">OneView Extension Notes</h4>
+                    <h6 class="OneViewModal">* Scores based on Sentiment Analysis by IBM WATSON</h6>
+                    <h6 class="OneViewModal">* Scores are on a 100 pt scale</h6>
+                    <h6 class="OneViewModal">* Data Reliability based on quantity of reviews</h6>
+                    <h6 class="OneViewModal">* Target words omitted if too few matches</h6>
                 </div>
             </div>
-
 
             <div class="OneViewModal" id="overallScore">
                 <h1 class="OneViewModal" id="scoreText">Overall Score:</h1>
                 <div class="OneViewModal" id="scoreValue">${score}</div>
             </div>
 
-            <div class="OneViewModal" id="chart">
-                <canvas id="myChart" width="80px" height="80px"></canvas>
+            <div class="OneViewModal" id="dataReliability">
+                <div class="OneViewModal" id="dataText">Data Reliability: </div>
+                <div class="OneViewModal" id="dataScore"></div>
             </div>
-               
-            <div class="OneViewModal" id="watsonReturns">
 
+            <div class="OneViewModal" id="chartContainer">
+                <div class="OneViewModal" id="chartContent">
+                    <div class="OneViewModal chartValues" id="chartValue0">            
+                        <div class="OneViewModal" id="chart0color"></div>
+                        <h5 class="OneViewModal" id="chart0text"></h5>
+                    </div>
+                    <div class="OneViewModal chartValues" id="chartValue1">            
+                        <div class="OneViewModal" id="chart1color"></div>
+                        <h5 class="OneViewModal" id="chart1text"></h5>
+                    </div>
+                    <div class="OneViewModal chartValues" id="chartValue2">            
+                        <div class="OneViewModal" id="chart2color"></div>
+                        <h5 class="OneViewModal" id="chart2text"></h5>
+                    </div>
+                    <div class="OneViewModal chartValues" id="chartValue3">            
+                        <div class="OneViewModal" id="chart3color"></div>
+                        <h5 class="OneViewModal" id="chart3text"></h5>
+                    </div>
+                    <div class="OneViewModal chartValues" id="chartValue4">            
+                        <div class="OneViewModal" id="chart4color"></div>
+                        <h5 class="OneViewModal" id="chart4text"></h5>
+                    </div>
+                </div>
+                <div class="OneViewModal" id="chart">
+                    <div class="OneViewModal" id="chart0"></div>
+                    <div class="OneViewModal" id="chart1"></div>
+                    <div class="OneViewModal" id="chart2"></div>
+                    <div class="OneViewModal" id="chart3"></div>
+                    <div class="OneViewModal" id="chart4"></div>
+                </div>
+                
             </div>
 
             <div class="OneViewModal" id="topReviews"></div>
@@ -243,39 +279,42 @@ function printData(score, matchedReviews, targets) {
         rev.appendChild(allReviewContainer);
     }
     for (let i = 0; i < targets.length; i++) {
-        const targ = document.createElement('div');
-        targ.setAttribute('class', 'OneViewModal');
-        targ.setAttribute('id', 'target');
+        let text = targets[i].text;
+        if (text === 'price') {
+            text = 'value';
+        }
         const rawScore = targets[i].score;
         const score = Math.floor(rawScore * 50 + 50);
-        targ.append(`${targets[i].text}: ${score}`);
+        const scoreHeight = score*1.5;
 
-        document.getElementById('watsonReturns').appendChild(targ);     
+        const chartVal = document.getElementById(`chart${i}`);
+        chartVal.style.height = `${scoreHeight}px`;
+        chartVal.innerHTML = score;
+
+        // const chartDisplay = document.getElementById(`chartValue${i}`);
+        // chartDisplay.style.display = 'inherit';
+
+        const chartText = document.getElementById(`chart${i}text`);
+        chartText.innerHTML = `${text}:  ${score}`;
+    }
+    const dataScore = document.getElementById('dataScore');
+    if (usage <= 10000) {
+        dataScore.innerHTML = 'POOR';
+        dataScore.style.backgroundColor = 'red';
+    } else if (usage <= 20000) {
+        dataScore.innerHTML = 'SUBPAR';
+        dataScore.style.backgroundColor = 'rgb(172, 59, 78)';
+    } else if (usage <= 30000) {
+        dataScore.innerHTML = 'ACCEPTABLE';
+        dataScore.style.backgroundColor = 'rgb(56, 55, 73)';
+    } else if (usage <= 40000) {
+        dataScore.innerHTML = 'GOOD';
+        dataScore.style.backgroundColor = 'rgb(91, 163, 95)';
+    } else {
+        dataScore.innerHTML = 'GREAT';
+        dataScore.style.backgroundColor = 'green';
     }
 
-
-    // this function will deal with OAuth when users click the "save review" button. Not yet functional
-
-    // function checkAuth () {
-    //     chrome.identity.getAuthToken({ interactive: true }, function (token) {
-    //         let init = {
-    //             method: 'GET',
-    //             async: true,
-    //             headers: {
-    //                 Authorization: 'Bearer ' + token,
-    //                 'Content-Type': 'application/json'
-    //             },
-    //             'contentType': 'json'
-    //         };
-    //         fetch(
-    //             'https://people.googleapis.com/v1/contactGroups/all?maxMembers=20&key=AIzaSyAHYnp3DtHiWgWvkWmbuvdf_91C5c-Dga0',
-    //             init)
-    //             .then((response) => response.json())
-    //             .then(function (data) {
-    //                 console.log(data)
-    //             });
-    //     });
-    // }
 
     function exitReset() {
         thisModal.close();
@@ -289,7 +328,8 @@ function printData(score, matchedReviews, targets) {
         if (event.target.id === "saveButton") {
             // checkAuth();
         }
-        else if (!(event.target.id === "exitButton" || event.target.className === "OneViewModal" || event.target.className === "OneViewModal reviewTitles" || event.target.className === "OneViewModal reviewText")) {
+        else if (!(event.target.id === "exitButton" || event.target.className === "OneViewModal" || event.target.className === "OneViewModal reviewTitles"
+                || event.target.className === "OneViewModal reviewText" || event.target.className === "OneViewModal chartValues")) {
             exitReset();
         }
     }
@@ -300,7 +340,6 @@ function printData(score, matchedReviews, targets) {
         document.body.removeEventListener("click", _parseClick);
     }
 }
-
 
 
 
