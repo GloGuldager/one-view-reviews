@@ -23,7 +23,7 @@
     "persistent": false
    },
   "permissions": ["contextMenus", "tabs", "identity"],
-  "web_accessible_resources" : ["*.html", "logos/OneViewLogo.png"],
+  "web_accessible_resources" : ["*.html", "logos/OneViewLogo.png", "logos/loadingGif.gif"],
   "icons": {
       "16": "./logos/OneViewIcon16.png",
       "32": "./logos/OneViewIcon32.png",

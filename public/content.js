@@ -37,18 +37,18 @@ chrome.runtime.onMessage.addListener(
 function userInputModal(rawURL, path) {
     //toggle this path on if you want to bypass the server and just work on dummy data in the Results Modal
 
-    dummyTargetResults = [
-        {'text':'value', 'score': 0.432}, {'text':'quality', 'score': 0.034}, {'text':'value', 'score': -0.432}, {'text':'quality', 'score': 0.234}, {'text':'longer query', 'score': 0.634}
-    ]
-    dummyReviewArray = [
-        { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
-        { 'reviewTitle': 'A totally different title!', 'reviewText': 'Amazing donut revenge never saw me coming left on Polaski Highway all the way to heaven if several small discombobulated loners never once said hi when they went to sleep I could never live it down no never live it down now let me be.' },
-        { 'reviewTitle': 'This is what it looks like if somebody puts way too much text in the title!', 'reviewText': 'And nothing in body.' },
-        { 'reviewTitle': 'Ok', 'reviewText': 'This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. ' },
-        { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
-        { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' }
-    ];
-    const usage = 37777;
+    // dummyTargetResults = [
+    //     {'text':'value', 'score': 0.432}, {'text':'quality', 'score': 0.034}, {'text':'value', 'score': -0.432}, {'text':'quality', 'score': 0.234}, {'text':'longer query', 'score': 0.634}
+    // ]
+    // dummyReviewArray = [
+    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
+    //     { 'reviewTitle': 'A totally different title!', 'reviewText': 'Amazing donut revenge never saw me coming left on Polaski Highway all the way to heaven if several small discombobulated loners never once said hi when they went to sleep I could never live it down no never live it down now let me be.' },
+    //     { 'reviewTitle': 'This is what it looks like if somebody puts way too much text in the title!', 'reviewText': 'And nothing in body.' },
+    //     { 'reviewTitle': 'Ok', 'reviewText': 'This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. ' },
+    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
+    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' }
+    // ];
+    // const usage = 37777;
     // return printData(82, dummyReviewArray, dummyTargetResults, usage);
 
     const modal = document.createElement('dialog');
@@ -101,9 +101,11 @@ function userInputModal(rawURL, path) {
         if (input3) {
             keywords.push(input3);
         }
+        console.log(dialog);
         dialog.close();
         removeListeners();
-        getASIN(rawURL, path, keywords);
+        createLoadModal(rawURL, path, keywords);
+        // getASIN(rawURL, path, keywords);
     }
     dialog.querySelector("form").addEventListener("submit", _formSubmit);
 
@@ -121,6 +123,23 @@ function userInputModal(rawURL, path) {
         document.body.removeEventListener("click", _cancelClick);
         dialog.querySelector("form").removeEventListener("submit", _formSubmit);
     }
+}
+
+function createLoadModal (rawURL, path, keywords) {
+    const modal = document.createElement('dialog');
+    modal.setAttribute("style", "outline-width:none");
+    modal.setAttribute("id", "loadModal");
+    modal.innerHTML =
+        `<div class="OneViewModal">
+            <div id="loadText">Analyzing Reviews...</div>
+            <div id="loadGif">
+                <img src="https://drive.google.com/uc?export=download&id=1vcrUSKxnMnBLm7_JplaW7l1NB39BHkMQ" alt="loadingGif" style= "height: 96px; width: 96px"></img>
+            </div>            
+        </div>`;
+    document.body.appendChild(modal);
+    const loadModal = document.getElementById("loadModal");
+    loadModal.showModal();
+    getASIN(rawURL, path, keywords);
 }
 
 function getASIN(rawURL, path, keywords) {
@@ -173,7 +192,7 @@ function parseData(data) {
 }
 
 function printData(score, matchedReviews, targets, usage) {
-
+    loadModal.close();
     let printModal = document.createElement("dialog");
     printModal.setAttribute("id", "printModal");
     printModal.innerHTML =
