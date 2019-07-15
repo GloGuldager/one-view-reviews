@@ -4,14 +4,21 @@ chrome.contextMenus.create({
     contexts: ['all']
 });
 
+// Toggle this function on for testing the OAuth and off for testing normal functionality
+chrome.browserAction.onClicked.addListener(() => {
+    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+        console.log(tabs[0].url);
+        chrome.tabs.sendMessage(tabs[0].id, { type: 'analyzeReviews', url: tabs[0].url });
+    });
+});
 
 chrome.contextMenus.onClicked.addListener(() => {
-    
+
     chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-        // chrome.tabs.sendMessage( tabs[0].id, {type: 'printAnalysis', greeting: "Coming from background"});
         console.log(tabs[0].url);
         chrome.tabs.sendMessage(tabs[0].id, { type: 'analyzeReviews', url: tabs[0].url });
     });
 });
 
 
+// editable
