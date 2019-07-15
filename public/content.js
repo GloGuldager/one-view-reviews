@@ -170,7 +170,7 @@ function AJAXRequest(ASIN, keywords) {
         mode: 'cors'
     }).then(response => response.json())
         .then(data => parseData(data))
-        .catch(error => console.error('Error:', error));
+        .catch(error => alert('No Watson data returned. Try a different query. Products with more reviews and queries with more target words tend to yield better results!'));
 
 }
 

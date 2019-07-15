@@ -4,10 +4,6 @@ chrome.contextMenus.create({
     contexts: ['all']
 });
 
-// Toggle this function on for testing the OAuth and off for testing normal functionality
-// chrome.browserAction.onClicked.addListener(function() {
-//     chrome.tabs.create({url: 'index.html'});
-//   });
 
 chrome.contextMenus.onClicked.addListener(() => {
     
@@ -19,4 +15,3 @@ chrome.contextMenus.onClicked.addListener(() => {
 });
 
 
-// editable

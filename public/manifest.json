@@ -14,7 +14,7 @@
   },
   "content_scripts": [{
     "css": ["modals.css"],
-    "js": ["content.js", "printAnalysis.js"],
+    "js": ["content.js"],
     "matches": [ "https://*.amazon.com/*"],
     "run_at": "document_start"
    }],
@@ -23,7 +23,7 @@
     "persistent": false
    },
   "permissions": ["contextMenus", "tabs", "identity"],
-  "web_accessible_resources" : ["*.html", "logos/OneViewLogo.png", "logos/loadingGif.gif"],
+  "web_accessible_resources" : ["*.html"],
   "icons": {
       "16": "./logos/OneViewIcon16.png",
       "32": "./logos/OneViewIcon32.png",
