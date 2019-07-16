@@ -22,7 +22,7 @@ body {
         "- - - - - - - - - - - -"
         "c c c c c c c c c c c c"
         "r r r r r r r r r r r r"
-        "u u u u u u u u u u sb sb";
+        "lg lg sg sg t t t t t t t t";
     position: absolute;
     top: 0px;
     left: 0px;
@@ -228,21 +228,62 @@ h5 {
 /* ------------------------------------------------------------------------------- */
 
 
-#save {
-    grid-area: sb;
-    padding: 10px 0px;
-    margin-top: 3px;
+#loginButton {
+    grid-area: lg;
+    background-color: #4566ad;
+    color: white;
+    border-radius: 8px;
+    padding: 2px 5px;
+    display: none;
+    margin: 5px;
+}
+#signupButton {
+    grid-area: sg;
+    background-color: #f68c1e;
+    color: white;
+    border-radius: 8px;
+    padding: 2px 5px;
+    display: none;
+    margin: 5px;
+}
+#tag {
+    grid-area: t;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: flex-end;
+    
+}
+#tagButton {
+    background-color: rgb(216, 61, 61);
+    color: white;
+    border-radius: 8px;
+    padding: 2px 8px;
+    display: none;
+    margin: 5px;
 }
 #saveButton {
-    /* background-color: #2b3990; */
     background-color: green;
     color: white;
     border-radius: 8px;
-    padding: 4px 10px;
+    padding: 2px 8px;
+    display: none;
+    margin: 5px;
 }
-#saveButton:hover {
+#saveButton:hover, #loginButton:hover, #signupButton:hover, #tagButton:hover {
     background-color: #00aeef;
 }
+#formContainer {
+    display: none;
+}
+#tagForm {
+    width: 100px;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: flex-end;
+    margin: 5px;
+}
+
+
 
 
 
