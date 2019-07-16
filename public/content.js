@@ -393,9 +393,11 @@ function printData(score, matchedReviews, targets, usage) {
         } else if (event.target.id === "saveButton") {
             // SAVE BUTTON NEEDS TO ACT AS SUBMIT FOR TAGFORM! NEED TO GRAB TAG INFO AND SEND IT IN THIS ARGUMENT
             saveSearch(score, matchedReviews, targets, usage);
+        } else if (event.target.id === "signupModal" || event.target.id === "loginModal") {
+            return;
         }
-        else if (!(event.target.id === "exitButton" || event.target.className === "OneViewModal" || event.target.className === "OneViewModal reviewTitles"
-            || event.target.className === "OneViewModal reviewText" || event.target.className === "OneViewModal chartValues")) {
+        else if (!(event.target.className === "OneViewModal" || event.target.className === "OneViewModal reviewTitles"
+            || event.target.className === "OneViewModal reviewText" || event.target.className === "OneViewModal chartValues") || event.target.id === "exitButton") {
             exitReset();
         }
     }
@@ -415,30 +417,30 @@ function printData(score, matchedReviews, targets, usage) {
         loginModal.setAttribute("style", "height:300px");
         loginModal.setAttribute("id", "loginModal");
         loginModal.innerHTML =
-            `<iframe class="OneViewModal" id="keywordInput" style="height:100%;"></iframe>
+            `<iframe class="OneViewModal" id="loginIFrame" style="height:100%;"></iframe>
             <div class="OneViewModal" style="position:absolute; top:1px; left:1px; padding: 3px; padding-top: 2px;">  
-                <button style="background-color: #f68c1e; color: white; font-size: 14px; font-weight: bold;">x</button>
+                <button class="OneViewModal" id="closeLogin" style="background-color: #f68c1e; color: white; font-size: 14px; font-weight: bold;">x</button>
             </div>
             <div class="OneViewModal" style="position:absolute; top: 10px; left:5px; margin: 5px; padding: 0px 20px">
                 <img class="OneViewModal" src="https://drive.google.com/uc?export=download&id=1e7eAPsvTk66LsrWIaSbbeMqZYOOarXdl" alt="OneView Logo">
             </div>
             <div class="OneViewModal" style="position:absolute; top: 130px; left:5px;">
                 <form class="OneViewModal"> 
-                Username: <input class="OneViewModal" style="margin: 5px;" type="text" name="first" id="1" class="input" value=""><br>
-                Password:  <input class="OneViewModal" style="margin: 5px;" type="text" name="second" id="2" class="input" value=""><br>
-                <input class="OneViewModal" style="margin: 5px; padding: 5px 12px; background-color: #f68c1e; color: white; font-size: 16px; border-radius: 4px" type="submit" value="Login">
+                Username: <input class="OneViewModal" style="margin: 5px;" type="text" name="first" id="logUser" class="input" value=""><br>
+                Password:  <input class="OneViewModal" style="margin: 5px 5px 5px 9px;" type="password" name="second" id="logPass" class="input" value=""><br>
+                <input class="OneViewModal" style="margin: 5px 5px 5px 78px; padding: 5px 12px; background-color: #f68c1e; color: white; font-size: 16px; border-radius: 4px" type="submit" value="Login">
                 </form>
             </div>`;
         document.body.appendChild(loginModal);
-        const dialog = document.getElementById("loginModal");
-        dialog.showModal();
+        const loginDialog = document.getElementById("loginModal");
+        loginDialog.showModal();
 
 
-        const iframe = document.getElementById("keywordInput");
+        const iframe = document.getElementById("loginIFrame");
         iframe.frameBorder = 0;
 
-        dialog.querySelector("button").addEventListener("click", () => {
-            dialog.close();
+        loginDialog.querySelector("#closeLogin").addEventListener("click", () => {
+            loginDialog.close();
         });
 
         const _formSubmit = () => {
@@ -446,18 +448,18 @@ function printData(score, matchedReviews, targets, usage) {
             event.preventDefault();
 
             // alert('submitted');
-            const username = document.getElementById('1').value;
-            const password = document.getElementById('2').value;
-            dialog.close();
+            const username = document.getElementById('logUser').value;
+            const password = document.getElementById('logPass').value;
+            loginDialog.close();
             removeListeners();
             getUser(username, password);
         }
-        dialog.querySelector("form").addEventListener("submit", _formSubmit);
+        loginDialog.querySelector("form").addEventListener("submit", _formSubmit);
 
 
         const _cancelClick = event => {
             if (!(event.target.className === "OneViewModal")) {
-                dialog.close();
+                loginDialog.close();
                 removeListeners();
             }
         }
@@ -466,30 +468,10 @@ function printData(score, matchedReviews, targets, usage) {
 
         function removeListeners() {
             document.body.removeEventListener("click", _cancelClick);
-            dialog.querySelector("form").removeEventListener("submit", _formSubmit);
+            loginDialog.querySelector("form").removeEventListener("submit", _formSubmit);
         }
 
     }
-    function getUser(username, password) {
-        var url = 'http://localhost:3000/api/login';
-        // var url = 'https://one-view-reviews-api.herokuapp.com/api/login';
-        var data = {
-            "username": username,
-            "password": password
-        };
-        console.log(data);
-        fetch(url, {
-            method: 'POST', // or 'PUT'
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams(data), // data can be `string` or {object}!
-            mode: 'cors'
-        }).then(response => response.json())
-            .then(data => saveLocalID(data))
-            .catch(error => alert('Failed to Work'));
-    }
-
 
     function signupModal() {
         console.log("in signup Modal");
@@ -499,29 +481,29 @@ function printData(score, matchedReviews, targets, usage) {
         signupModal.innerHTML =
             `<iframe class="OneViewModal" id="keywordInput" style="height:100%;"></iframe>
             <div class="OneViewModal" style="position:absolute; top:1px; left:1px; padding: 3px; padding-top: 2px;">  
-                <button style="background-color: #f68c1e; color: white; font-size: 14px; font-weight: bold;">x</button>
+                <button class="OneViewModal" id="closeSignup" style="background-color: #f68c1e; color: white; font-size: 14px; font-weight: bold;">x</button>
             </div>
             <div class="OneViewModal" style="position:absolute; top: 10px; left:5px; margin: 5px; padding: 0px 20px">
                 <img class="OneViewModal" src="https://drive.google.com/uc?export=download&id=1e7eAPsvTk66LsrWIaSbbeMqZYOOarXdl" alt="OneView Logo">
             </div>
             <div class="OneViewModal" style="position:absolute; top: 130px; left:5px;">
                 <form class="OneViewModal" style="margin-left: 10px;"> 
-                Username: <input class="OneViewModal" style="margin: 5px;" type="text" name="first" id="1" class="input" value=""><br>
-                Password:  <input class="OneViewModal" style="margin: 5px 5px 5px 9px;" type="password" name="second" id="2" class="input" value=""><br>
-                Confirm:  <input class="OneViewModal" style="margin: 5px 5px 5px 17px;" type="password" name="second" id="3" class="input" value=""><br>
+                Username: <input class="OneViewModal" style="margin: 5px;" type="text" name="username" id="signUser" class="input" value=""><br>
+                Password:  <input class="OneViewModal" style="margin: 5px 5px 5px 9px;" type="password" name="password" id="signPass" class="input" value=""><br>
+                Confirm:  <input class="OneViewModal" style="margin: 5px 5px 5px 17px;" type="password" name="confirm" id="signConfirm" class="input" value=""><br>
                 <input class="OneViewModal" style="margin: 5px 5px 5px 78px; padding: 5px 12px; background-color: #f68c1e; color: white; font-size: 16px; border-radius: 4px" type="submit" value="Create Account">
                 </form>
             </div>`;
         document.body.appendChild(signupModal);
-        const dialog = document.getElementById("signupModal");
-        dialog.showModal();
+        const signupDialog = document.getElementById("signupModal");
+        signupDialog.showModal();
 
 
         const iframe = document.getElementById("keywordInput");
         iframe.frameBorder = 0;
 
-        dialog.querySelector("button").addEventListener("click", () => {
-            dialog.close();
+        signupDialog.querySelector("#closeSignup").addEventListener("click", () => {
+            signupDialog.close();
         });
 
         const _formSubmit = () => {
@@ -529,34 +511,57 @@ function printData(score, matchedReviews, targets, usage) {
             event.preventDefault();
 
             // alert('submitted');
-            const username = document.getElementById('1').value;
-            const password = document.getElementById('2').value;
-            const confirmPass = document.getElementById('3').value;
-            if (password != confirmPass) {
+            const username = document.getElementById('signUser').value;
+            const password = document.getElementById('signPass').value;
+            const confirmPass = document.getElementById('signConfirm').value;
+            if (!(username && passowrd && confirmPass)) {
+                return alert('Please fill out all fields');
+            } else if (password != confirmPass) {
                 return alert('Passwords do not match');
             }
-            dialog.close();
+            signupDialog.close();
             removeListeners();
             postUser(username, password);
         }
-        dialog.querySelector("form").addEventListener("submit", _formSubmit);
+        signupDialog.querySelector("form").addEventListener("submit", _formSubmit);
 
 
-        const _cancelClick = event => {
+        const _cancelSignup = event => {
             if (!(event.target.className === "OneViewModal")) {
-                dialog.close();
+                signupDialog.close();
                 removeListeners();
             }
         }
-        document.body.addEventListener("click", _cancelClick);
+        document.body.addEventListener("click", _cancelSignup);
 
 
         function removeListeners() {
-            document.body.removeEventListener("click", _cancelClick);
-            dialog.querySelector("form").removeEventListener("submit", _formSubmit);
+            document.body.removeEventListener("click", _cancelSignup);
+            signupDialog.querySelector("form").removeEventListener("submit", _formSubmit);
         }
 
     }
+
+    function getUser(username, password) {
+        var url = 'http://localhost:3000/api/login';
+        // var url = 'https://one-view-reviews-api.herokuapp.com/api/login';
+        var data = {
+            "username": username,
+            "password": password
+        };
+        console.log(data);
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams(data), 
+            mode: 'cors'
+        }).then(response => response.json())
+            .then(data => saveLocalID(data))
+            .catch(error => alert('Failed to Work'));
+    }
+
     function postUser(username, password) {
         var url = 'http://localhost:3000/api/signup';
         // var url = 'https://one-view-reviews-api.herokuapp.com/api/signup';
