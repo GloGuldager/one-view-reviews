@@ -37,19 +37,19 @@ chrome.runtime.onMessage.addListener(
 function userInputModal(rawURL, path) {
     //toggle this path on if you want to bypass the server and just work on dummy data in the Results Modal
 
-    // dummyTargetResults = [
-    //     {'text':'value', 'score': 0.432}, {'text':'quality', 'score': 0.034}, {'text':'value', 'score': -0.432}, {'text':'quality', 'score': 0.234}, {'text':'longer query', 'score': 0.634}
-    // ]
-    // dummyReviewArray = [
-    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
-    //     { 'reviewTitle': 'A totally different title!', 'reviewText': 'Amazing donut revenge never saw me coming left on Polaski Highway all the way to heaven if several small discombobulated loners never once said hi when they went to sleep I could never live it down no never live it down now let me be.' },
-    //     { 'reviewTitle': 'This is what it looks like if somebody puts way too much text in the title!', 'reviewText': 'And nothing in body.' },
-    //     { 'reviewTitle': 'Ok', 'reviewText': 'This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. ' },
-    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
-    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' }
-    // ];
-    // const usage = 37777;
-    // return printData(82, dummyReviewArray, dummyTargetResults, usage);
+    dummyTargetResults = [
+        { 'text': 'value', 'score': 0.432 }, { 'text': 'quality', 'score': 0.034 }, { 'text': 'value', 'score': -0.432 }, { 'text': 'quality', 'score': 0.234 }, { 'text': 'longer query', 'score': 0.634 }
+    ]
+    dummyReviewArray = [
+        { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
+        { 'reviewTitle': 'A totally different title!', 'reviewText': 'Amazing donut revenge never saw me coming left on Polaski Highway all the way to heaven if several small discombobulated loners never once said hi when they went to sleep I could never live it down no never live it down now let me be.' },
+        { 'reviewTitle': 'This is what it looks like if somebody puts way too much text in the title!', 'reviewText': 'And nothing in body.' },
+        { 'reviewTitle': 'Ok', 'reviewText': 'This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. ' },
+        { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
+        { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' }
+    ];
+    const usage = 37777;
+    return printData(82, dummyReviewArray, dummyTargetResults, usage);
 
     const modal = document.createElement('dialog');
     modal.setAttribute("style", "height:350px");
@@ -125,7 +125,7 @@ function userInputModal(rawURL, path) {
     }
 }
 
-function createLoadModal (rawURL, path, keywords) {
+function createLoadModal(rawURL, path, keywords) {
     const modal = document.createElement('dialog');
     modal.setAttribute("style", "outline-width:none");
     modal.setAttribute("id", "loadModal");
@@ -192,7 +192,7 @@ function parseData(data) {
 }
 
 function printData(score, matchedReviews, targets, usage) {
-    loadModal.close();
+    // loadModal.close();
     let printModal = document.createElement("dialog");
     printModal.setAttribute("id", "printModal");
     printModal.innerHTML =
@@ -209,7 +209,7 @@ function printData(score, matchedReviews, targets, usage) {
                     <h4 class="OneViewModal" id="notesTitle" style="display: grid; justify-content: center;">OneView Extension Notes</h4>
                     <h6 class="OneViewModal">* Scores based on Sentiment Analysis by IBM WATSON</h6>
                     <h6 class="OneViewModal">* Scores are on a 100 pt scale</h6>
-                    <h6 class="OneViewModal">* Data Reliability based on quantity of reviews</h6>
+                    <h6 class="OneViewModal">* Data Reliability based on quantity of review text</h6>
                     <h6 class="OneViewModal">* Target words omitted if too few matches</h6>
                 </div>
             </div>
@@ -259,8 +259,21 @@ function printData(score, matchedReviews, targets, usage) {
 
             <div class="OneViewModal" id="topReviews"></div>
 
-            <div class="OneViewModal" id="save">
-                <button id="saveButton">Save Results</button>
+            
+            
+            <button id="loginButton">Login</button>
+            <button id="signupButton">New User</button>
+            <div class="OneViewModal" id="tag">
+                <button id="tagButton">Add Tags</button>
+                <div id="formContainer">
+                    <form class="OneViewModal" id="tagForm"> 
+                        <input class="OneViewModal" type="text" name="first" id="tag1" class="tagInput" value="">
+                        <input class="OneViewModal" type="text" name="second" id="tag2" class="tagInput" value="">
+                        <input class="OneViewModal" type="text" name="second" id="tag3" class="tagInput" value="">
+                    </form>
+                </div>
+                <button class="OneViewModal" type="submit" id="saveButton" form="tagForm">Save Reviews</button>
+            </div>
             </div>
 
         </div>`;
@@ -272,7 +285,21 @@ function printData(score, matchedReviews, targets, usage) {
 
     const iframe = document.getElementById("printIFrame");
     iframe.frameBorder = 0;
-    
+
+    // localStorage.oneViewID = 3;
+    if (localStorage.oneViewID) {
+        //will determine which buttons are visible and which are displayed
+        const saveButton = document.getElementById('saveButton');
+        saveButton.style.display = 'block';
+        const tagButton = document.getElementById('tagButton');
+        tagButton.style.display = 'block';
+    } else {
+        const loginButton = document.getElementById('loginButton');
+        loginButton.style.display = 'block';
+        const singupButton = document.getElementById('signupButton');
+        singupButton.style.display = 'block';
+    }
+
     addReviews();
     function addReviews() {
 
@@ -304,7 +331,7 @@ function printData(score, matchedReviews, targets, usage) {
         }
         const rawScore = targets[i].score;
         const score = Math.floor(rawScore * 50 + 50);
-        const scoreHeight = score*1.5;
+        const scoreHeight = score * 1.5;
 
         const chartVal = document.getElementById(`chart${i}`);
         chartVal.style.height = `${scoreHeight}px`;
@@ -344,11 +371,21 @@ function printData(score, matchedReviews, targets, usage) {
     const _parseClick = event => {
 
         console.log(event.target);
-        if (event.target.id === "saveButton") {
-            // checkAuth();
+        if (event.target.id === "loginButton") {
+            loginModal();
+        } else if (event.target.id === "signupButton") {
+            signupModal();
+        } else if (event.target.id === "tagButton") {
+            const tagButton = document.getElementById('tagButton');
+            tagButton.style.display = 'none';
+            const tagForm = document.getElementById('formContainer');
+            tagForm.style.display = 'block';
+        } else if (event.target.id === "saveButton") {
+            // SAVE BUTTON NEEDS TO ACT AS SUBMIT FOR TAGFORM! NEED TO GRAB TAG INFO AND SEND IT IN THIS ARGUMENT
+            saveSearch(score, matchedReviews, targets, usage);
         }
         else if (!(event.target.id === "exitButton" || event.target.className === "OneViewModal" || event.target.className === "OneViewModal reviewTitles"
-                || event.target.className === "OneViewModal reviewText" || event.target.className === "OneViewModal chartValues")) {
+            || event.target.className === "OneViewModal reviewText" || event.target.className === "OneViewModal chartValues")) {
             exitReset();
         }
     }
@@ -360,6 +397,200 @@ function printData(score, matchedReviews, targets, usage) {
     }
 }
 
+
+function loginModal() {
+    // modal form
+    const loginModal = document.createElement('dialog');
+    loginModal.setAttribute("style", "height:300px");
+    loginModal.setAttribute("id", "loginModal");
+    loginModal.innerHTML =
+        `<iframe class="OneViewModal" id="keywordInput" style="height:100%;"></iframe>
+            <div class="OneViewModal" style="position:absolute; top:1px; left:1px; padding: 3px; padding-top: 2px;">  
+                <button style="background-color: #f68c1e; color: white; font-size: 14px; font-weight: bold;">x</button>
+            </div>
+            <div class="OneViewModal" style="position:absolute; top: 10px; left:5px; margin: 5px; padding: 0px 20px">
+                <img class="OneViewModal" src="https://drive.google.com/uc?export=download&id=1e7eAPsvTk66LsrWIaSbbeMqZYOOarXdl" alt="OneView Logo">
+            </div>
+            <div class="OneViewModal" style="position:absolute; top: 130px; left:5px;">
+                <form class="OneViewModal"> 
+                Username: <input class="OneViewModal" style="margin: 5px;" type="text" name="first" id="1" class="input" value=""><br>
+                Password:  <input class="OneViewModal" style="margin: 5px;" type="text" name="second" id="2" class="input" value=""><br>
+                <input class="OneViewModal" style="margin: 5px; padding: 5px 12px; background-color: #f68c1e; color: white; font-size: 16px; border-radius: 4px" type="submit" value="Login">
+                </form>
+            </div>`;
+    document.body.appendChild(loginModal);
+    const dialog = document.getElementById("loginModal");
+    dialog.showModal();
+
+
+    const iframe = document.getElementById("keywordInput");
+    iframe.frameBorder = 0;
+
+    dialog.querySelector("button").addEventListener("click", () => {
+        dialog.close();
+    });
+
+    const _formSubmit = () => {
+
+        event.preventDefault();
+
+        // alert('submitted');
+        const username = document.getElementById('1').value;
+        const password = document.getElementById('2').value;
+        dialog.close();
+        removeListeners();
+        getUser(username, password);
+    }
+    dialog.querySelector("form").addEventListener("submit", _formSubmit);
+
+
+    const _cancelClick = event => {
+        if (!(event.target.className === "OneViewModal")) {
+            dialog.close();
+            removeListeners();
+        }
+    }
+    document.body.addEventListener("click", _cancelClick);
+
+
+    function removeListeners() {
+        document.body.removeEventListener("click", _cancelClick);
+        dialog.querySelector("form").removeEventListener("submit", _formSubmit);
+    }
+
+}
+function getUser(username, password) {
+    var url = 'http://localhost:3000/api/signup';
+    // var url = 'https://one-view-reviews-api.herokuapp.com/api/signup';
+    var data = {
+        "username": username,
+        "password": password
+    };
+    console.log(data);
+    fetch(url, {
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams(data), // data can be `string` or {object}!
+        mode: 'cors'
+    }).then(response => response.json())
+        .then(data => saveLocalID(data))
+        .catch(error => alert('Failed to Work'));
+}
+
+
+function signupModal() {
+    console.log("in signup Modal");
+    const signupModal = document.createElement('dialog');
+    signupModal.setAttribute("style", "height:300px");
+    signupModal.setAttribute("id", "signupModal");
+    signupModal.innerHTML =
+        `<iframe class="OneViewModal" id="keywordInput" style="height:100%;"></iframe>
+            <div class="OneViewModal" style="position:absolute; top:1px; left:1px; padding: 3px; padding-top: 2px;">  
+                <button style="background-color: #f68c1e; color: white; font-size: 14px; font-weight: bold;">x</button>
+            </div>
+            <div class="OneViewModal" style="position:absolute; top: 10px; left:5px; margin: 5px; padding: 0px 20px">
+                <img class="OneViewModal" src="https://drive.google.com/uc?export=download&id=1e7eAPsvTk66LsrWIaSbbeMqZYOOarXdl" alt="OneView Logo">
+            </div>
+            <div class="OneViewModal" style="position:absolute; top: 130px; left:5px;">
+                <form class="OneViewModal"> 
+                Username: <input class="OneViewModal" style="margin: 5px;" type="text" name="first" id="1" class="input" value=""><br>
+                Password:  <input class="OneViewModal" style="margin: 5px;" type="text" name="second" id="2" class="input" value=""><br>
+                <input class="OneViewModal" style="margin: 5px; padding: 5px 12px; background-color: #f68c1e; color: white; font-size: 16px; border-radius: 4px" type="submit" value="Create Account">
+                </form>
+            </div>`;
+    document.body.appendChild(signupModal);
+    const dialog = document.getElementById("signupModal");
+    dialog.showModal();
+
+
+    const iframe = document.getElementById("keywordInput");
+    iframe.frameBorder = 0;
+
+    dialog.querySelector("button").addEventListener("click", () => {
+        dialog.close();
+    });
+
+    const _formSubmit = () => {
+
+        event.preventDefault();
+
+        // alert('submitted');
+        const username = document.getElementById('1').value;
+        const password = document.getElementById('2').value;
+        dialog.close();
+        removeListeners();
+        postUser(username, password);
+    }
+    dialog.querySelector("form").addEventListener("submit", _formSubmit);
+
+
+    const _cancelClick = event => {
+        if (!(event.target.className === "OneViewModal")) {
+            dialog.close();
+            removeListeners();
+        }
+    }
+    document.body.addEventListener("click", _cancelClick);
+
+
+    function removeListeners() {
+        document.body.removeEventListener("click", _cancelClick);
+        dialog.querySelector("form").removeEventListener("submit", _formSubmit);
+    }
+
+}
+function postUser(username, password) {
+    var url = 'http://localhost:3000/api/signup';
+    // var url = 'https://one-view-reviews-api.herokuapp.com/api/signup';
+    var data = {
+        "username": username,
+        "password": password
+    };
+    console.log(data);
+    fetch(url, {
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams(data), // data can be `string` or {object}!
+        mode: 'cors'
+    }).then(response => response.json())
+        .then(data => saveLocalID(data))
+        .catch(error => alert('Failed to Work'));
+}
+function signupModal() {
+    // modal form
+    // fetch post route
+}
+function saveLocalID(data) {
+    console.log('response received');
+    console.log(data);
+    localStorage.oneViewID = data.id;
+}
+
+function saveSearch(score, matchedReviews, targets, usage, tags) {
+    var url = 'http://localhost:3000/api/review';
+    // var url = 'https://one-view-reviews-api.herokuapp.com/api/review';
+    var data = {
+        "score": score,
+        "reviews": matchedReviews,
+        "targets": targets,
+        "usage": usage
+    };
+    console.log(data);
+    fetch(url, {
+        method: 'POST', // or 'PUT'
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams(data), // data can be `string` or {object}!
+        mode: 'cors'
+    }).then(response => response.json())
+        .then(data => someFunction(data))
+        .catch(error => alert('Save failed'));
+}
 
 
     // console.log("should go to printAnalysis now");
