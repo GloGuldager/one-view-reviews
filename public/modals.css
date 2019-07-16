@@ -230,12 +230,13 @@ h5 {
 
 #loginButton {
     grid-area: lg;
-    background-color: #4566ad;
+    background-color: rgb(85, 85, 207);
     color: white;
     border-radius: 8px;
     padding: 2px 5px;
     display: none;
     margin: 5px;
+    margin-left: 12px;
 }
 #signupButton {
     grid-area: sg;
