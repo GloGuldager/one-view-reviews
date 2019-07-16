@@ -494,7 +494,7 @@ function printData(score, matchedReviews, targets, usage) {
     function signupModal() {
         console.log("in signup Modal");
         const signupModal = document.createElement('dialog');
-        signupModal.setAttribute("style", "height:300px");
+        signupModal.setAttribute("style", "height:350px");
         signupModal.setAttribute("id", "signupModal");
         signupModal.innerHTML =
             `<iframe class="OneViewModal" id="keywordInput" style="height:100%;"></iframe>
@@ -505,10 +505,11 @@ function printData(score, matchedReviews, targets, usage) {
                 <img class="OneViewModal" src="https://drive.google.com/uc?export=download&id=1e7eAPsvTk66LsrWIaSbbeMqZYOOarXdl" alt="OneView Logo">
             </div>
             <div class="OneViewModal" style="position:absolute; top: 130px; left:5px;">
-                <form class="OneViewModal"> 
+                <form class="OneViewModal" style="margin-left: 10px;"> 
                 Username: <input class="OneViewModal" style="margin: 5px;" type="text" name="first" id="1" class="input" value=""><br>
-                Password:  <input class="OneViewModal" style="margin: 5px;" type="text" name="second" id="2" class="input" value=""><br>
-                <input class="OneViewModal" style="margin: 5px; padding: 5px 12px; background-color: #f68c1e; color: white; font-size: 16px; border-radius: 4px" type="submit" value="Create Account">
+                Password:  <input class="OneViewModal" style="margin: 5px 5px 5px 9px;" type="password" name="second" id="2" class="input" value=""><br>
+                Confirm:  <input class="OneViewModal" style="margin: 5px 5px 5px 17px;" type="password" name="second" id="3" class="input" value=""><br>
+                <input class="OneViewModal" style="margin: 5px 5px 5px 78px; padding: 5px 12px; background-color: #f68c1e; color: white; font-size: 16px; border-radius: 4px" type="submit" value="Create Account">
                 </form>
             </div>`;
         document.body.appendChild(signupModal);
@@ -530,6 +531,10 @@ function printData(score, matchedReviews, targets, usage) {
             // alert('submitted');
             const username = document.getElementById('1').value;
             const password = document.getElementById('2').value;
+            const confirmPass = document.getElementById('3').value;
+            if (password != confirmPass) {
+                return alert('Passwords do not match');
+            }
             dialog.close();
             removeListeners();
             postUser(username, password);
