@@ -514,7 +514,7 @@ function printData(score, matchedReviews, targets, usage) {
             const username = document.getElementById('signUser').value;
             const password = document.getElementById('signPass').value;
             const confirmPass = document.getElementById('signConfirm').value;
-            if (!(username && passowrd && confirmPass)) {
+            if (!(username && password && confirmPass)) {
                 return alert('Please fill out all fields');
             } else if (password != confirmPass) {
                 return alert('Passwords do not match');
@@ -543,8 +543,8 @@ function printData(score, matchedReviews, targets, usage) {
     }
 
     function getUser(username, password) {
-        var url = 'http://localhost:3000/api/login';
-        // var url = 'https://one-view-reviews-api.herokuapp.com/api/login';
+        var url = `http://localhost:3000/api/users`;
+        // var url = 'https://one-view-reviews-api.herokuapp.com/api/users';
         var data = {
             "username": username,
             "password": password
@@ -563,8 +563,8 @@ function printData(score, matchedReviews, targets, usage) {
     }
 
     function postUser(username, password) {
-        var url = 'http://localhost:3000/api/signup';
-        // var url = 'https://one-view-reviews-api.herokuapp.com/api/signup';
+        var url = 'http://localhost:3000/api/users';
+        // var url = 'https://one-view-reviews-api.herokuapp.com/api/users';
         var data = {
             "username": username,
             "password": password
@@ -575,7 +575,7 @@ function printData(score, matchedReviews, targets, usage) {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: new URLSearchParams(data), // data can be `string` or {object}!
+            body: new URLSearchParams(data),
             mode: 'cors'
         }).then(response => response.json())
             .then(data => saveLocalID(data))
