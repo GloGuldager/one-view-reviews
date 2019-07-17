@@ -235,8 +235,7 @@ h5 {
     border-radius: 8px;
     padding: 2px 5px;
     display: none;
-    margin: 5px;
-    margin-left: 12px;
+    margin: 8px 5px 5px 12px;
 }
 #signupButton {
     grid-area: sg;
@@ -245,7 +244,7 @@ h5 {
     border-radius: 8px;
     padding: 2px 5px;
     display: none;
-    margin: 5px;
+    margin: 8px 5px 5px 5px;
 }
 #tag {
     grid-area: t;
@@ -260,7 +259,7 @@ h5 {
     border-radius: 8px;
     padding: 2px 8px;
     display: none;
-    margin: 5px;
+    margin: 8px 5px 5px 5px;
 }
 #saveButton {
     background-color: green;
@@ -268,7 +267,7 @@ h5 {
     border-radius: 8px;
     padding: 2px 8px;
     display: none;
-    margin: 5px;
+    margin: 8px 5px 5px 5px;
 }
 #saveButton:hover, #loginButton:hover, #signupButton:hover, #tagButton:hover {
     background-color: #00aeef;
@@ -281,7 +280,7 @@ h5 {
     display: grid;
     grid-template-columns: auto auto auto;
     justify-content: flex-end;
-    margin: 5px;
+    margin: 8px 5px 5px 5px;
 }
 
 
