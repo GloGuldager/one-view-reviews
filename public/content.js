@@ -414,7 +414,7 @@ function printData(score, matchedReviews, targets, usage) {
     function loginModal() {
         // modal form
         const loginModal = document.createElement('dialog');
-        loginModal.setAttribute("style", "height:300px");
+        loginModal.setAttribute("style", "height:270px");
         loginModal.setAttribute("id", "loginModal");
         loginModal.innerHTML =
             `<iframe class="OneViewModal" id="loginIFrame" style="height:100%;"></iframe>
@@ -428,7 +428,7 @@ function printData(score, matchedReviews, targets, usage) {
                 <form class="OneViewModal"> 
                 Username: <input class="OneViewModal" style="margin: 5px;" type="text" name="first" id="logUser" class="input" value=""><br>
                 Password:  <input class="OneViewModal" style="margin: 5px 5px 5px 9px;" type="password" name="second" id="logPass" class="input" value=""><br>
-                <input class="OneViewModal" style="margin: 5px 5px 5px 78px; padding: 5px 12px; background-color: #f68c1e; color: white; font-size: 16px; border-radius: 4px" type="submit" value="Login">
+                <input class="OneViewModal" style="margin: 5px 5px 5px 148px; padding: 5px 12px; background-color: #f68c1e; color: white; font-size: 16px; border-radius: 4px" type="submit" value="Login">
                 </form>
             </div>`;
         document.body.appendChild(loginModal);
@@ -476,7 +476,7 @@ function printData(score, matchedReviews, targets, usage) {
     function signupModal() {
         console.log("in signup Modal");
         const signupModal = document.createElement('dialog');
-        signupModal.setAttribute("style", "height:350px");
+        signupModal.setAttribute("style", "height:310px");
         signupModal.setAttribute("id", "signupModal");
         signupModal.innerHTML =
             `<iframe class="OneViewModal" id="keywordInput" style="height:100%;"></iframe>
@@ -543,7 +543,7 @@ function printData(score, matchedReviews, targets, usage) {
     }
 
     function getUser(username, password) {
-        var url = `http://localhost:3000/api/users`;
+        var url = `http://localhost:3000/api/users/${username}`;
         // var url = 'https://one-view-reviews-api.herokuapp.com/api/users';
         var data = {
             "username": username,
@@ -551,7 +551,7 @@ function printData(score, matchedReviews, targets, usage) {
         };
         console.log(data);
         fetch(url, {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
