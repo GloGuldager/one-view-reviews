@@ -391,8 +391,7 @@ function printData(score, matchedReviews, targets, usage) {
             const tagForm = document.getElementById('formContainer');
             tagForm.style.display = 'block';
         } else if (event.target.id === "saveButton") {
-            // SAVE BUTTON NEEDS TO ACT AS SUBMIT FOR TAGFORM! NEED TO GRAB TAG INFO AND SEND IT IN THIS ARGUMENT
-            saveSearch(score, matchedReviews, targets, usage);
+            saveTags();
         } else if (event.target.id === "signupModal" || event.target.id === "loginModal") {
             return;
         }
@@ -408,6 +407,47 @@ function printData(score, matchedReviews, targets, usage) {
         document.body.removeEventListener("click", _parseClick);
     }
 
+
+    function saveTags() {
+        event.preventDefault();
+        const tag1 = document.getElementById('tag1').value;
+        const tag2 = document.getElementById('tag2').value;
+        const tag3 = document.getElementById('tag3').value;
+        const tags = [];
+        if (tag1) {
+            tags.push(tag1);
+        }
+        if (tag2) {
+            tags.push(tag2);
+        }
+        if (tag3) {
+            tags.push(tag3);
+        }
+        saveSearch(score, matchedReviews, targets, usage, tags);
+    }
+
+    function saveSearch(score, matchedReviews, targets, usage, tags) {
+        var url = `http://localhost:3000/api/savereviews/${localStorage.oneViewID}`;
+        // var url = `https://one-view-reviews-api.herokuapp.com/api/reviews/${id}`;
+        var data = {
+            "score": score,
+            "reviews": matchedReviews,
+            "targets": targets,
+            "usage": usage,
+            "tags": tags
+        };
+        console.log(data);
+        fetch(url, {
+            method: 'POST', // or 'PUT'
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams(data), // data can be `string` or {object}!
+            mode: 'cors'
+        }).then(response => response.json())
+            .then(data => alert('Save Successful!'))
+            .catch(error => alert('Save failed'));
+    }
 
 
 
@@ -555,11 +595,11 @@ function printData(score, matchedReviews, targets, usage) {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: new URLSearchParams(data), 
+            body: new URLSearchParams(data),
             mode: 'cors'
         }).then(response => response.json())
             .then(data => saveLocalID(data))
-            .catch(error => alert('Failed to Work'));
+            .catch(error => alert('Login Failed. Try Again.'));
     }
 
     function postUser(username, password) {
@@ -592,27 +632,6 @@ function printData(score, matchedReviews, targets, usage) {
         printButtons();
     }
 
-    function saveSearch(score, matchedReviews, targets, usage, tags) {
-        var url = 'http://localhost:3000/api/review';
-        // var url = 'https://one-view-reviews-api.herokuapp.com/api/review';
-        var data = {
-            "score": score,
-            "reviews": matchedReviews,
-            "targets": targets,
-            "usage": usage
-        };
-        console.log(data);
-        fetch(url, {
-            method: 'POST', // or 'PUT'
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams(data), // data can be `string` or {object}!
-            mode: 'cors'
-        }).then(response => response.json())
-            .then(data => someFunction(data))
-            .catch(error => alert('Save failed'));
-    }
 }
 
     // console.log("should go to printAnalysis now");
