@@ -146,13 +146,11 @@ function getASIN(rawURL, path, keywords) {
     const splitASIN = rawURL.split(path)[1];
     const ASIN = splitASIN.substring(0, 10);
     console.log(ASIN);
-    // alert(ASIN + ' / ' + keywords);
 
     AJAXRequest(ASIN, keywords);
 }
 
 function AJAXRequest(ASIN, keywords) {
-    // alert("about to post");
 
     var url = 'http://localhost:3000/api/post';
     // var url = 'https://one-view-reviews-api.herokuapp.com/api/post';
@@ -175,7 +173,9 @@ function AJAXRequest(ASIN, keywords) {
 }
 
 function parseData(data) {
-    console.log(data);
+
+    const loadingModal = document.getElementById("loadModal");
+    loadingModal.close();
 
     const overallSentiment = data.analysis.sentiment.document.score;
     const overallScore = Math.floor(overallSentiment * 50 + 50);
@@ -187,12 +187,11 @@ function parseData(data) {
 
     const usage = data.analysis.usage.text_characters;
 
-
     printData(overallScore, matchedReviews, targetSentiments, usage);
 }
 
 function printData(score, matchedReviews, targets, usage) {
-    // loadModal.close();
+
     let printModal = document.createElement("dialog");
     printModal.setAttribute("id", "printModal");
     printModal.innerHTML =
@@ -427,6 +426,7 @@ function printData(score, matchedReviews, targets, usage) {
     }
 
     function saveSearch(score, matchedReviews, targets, usage, tags) {
+        // console.log(ASIN);
         var url = `http://localhost:3000/api/savereviews/${localStorage.oneViewID}`;
         // var url = `https://one-view-reviews-api.herokuapp.com/api/reviews/${id}`;
         var data = {
@@ -445,8 +445,42 @@ function printData(score, matchedReviews, targets, usage) {
             body: new URLSearchParams(data), // data can be `string` or {object}!
             mode: 'cors'
         }).then(response => response.json())
-            .then(data => alert('Save Successful!'))
+            .then(data => successModal())
             .catch(error => alert('Save failed'));
+    }
+
+    function successModal () {
+        const successModal = document.createElement('dialog');
+        successModal.setAttribute("style", "height:180px");
+        successModal.setAttribute("id", "successModal");
+        successModal.innerHTML =
+            `<iframe class="OneViewModal" id="successIFrame" style="height:100%; width: 322px;"></iframe>
+            <div class="OneViewModal" style="position:absolute; top: 10px; left:5px; margin: 5px; padding: 0px 20px">
+                <div class="OneViewModal" id="successText" style="height: 45px; border-bottom-style: dotted; border-width: 1px; border-color: rgba(43,57,144, 0.6)">Save Successful!</div>
+                <div class="OneViewModal" id="visitWebsite" style="margin-top: 15px; font-size: 24px; line-height: 1.8rem">
+                    Visit our <a href="OUR DEPLOYED URL NEEDS TO GO HERE DONT FORGET">WEBSITE</a> to see your saved reviews!
+                </div>
+            </div>`;
+        document.body.appendChild(successModal);
+        const successDialog = document.getElementById("successModal");
+        successDialog.showModal();
+
+
+        const iframe = document.getElementById("successIFrame");
+        iframe.frameBorder = 0;
+
+        const _cancelClick = event => {
+            if (!(event.target.className === "OneViewModal")) {
+                successDialog.close();
+                removeListeners();
+            }
+        }
+        document.body.addEventListener("click", _cancelClick);
+
+
+        function removeListeners() {
+            document.body.removeEventListener("click", _cancelClick);
+        }
     }
 
 
