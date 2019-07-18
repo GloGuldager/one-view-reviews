@@ -453,7 +453,7 @@ function printData(score, matchedReviews, targets, usage) {
     function saveSearch(score, matchedReviews, targets, usage, tags) {
         // console.log(ASIN);
         // var url = `http://localhost:3000/api/savereviews/${localStorage.oneViewID}`;
-        var url = `https://one-view-reviews-api.herokuapp.com/api/reviews/${localStorage.oneViewID}`;
+        var url = `https://one-view-reviews-api.herokuapp.com/api/savereviews/${localStorage.oneViewID}`;
         var data = {
             "score": score,
             "reviews": matchedReviews,
