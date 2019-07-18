@@ -64,11 +64,11 @@ function userInputModal(rawURL, path) {
             </div>
             <div class="OneViewModal" style="position:absolute; top: 130px; left:5px;">
                 <div class="OneViewModal" style="margin: 2px 5px;">Add target words or phrases to refine your review search (optional):</div> 
-                <form class="OneViewModal"> 
+                <form class="OneViewModal" id="queryForm"> 
                 <input class="OneViewModal" style="margin: 5px;" type="text" name="first" id="1" class="input" value=""><br>
                 <input class="OneViewModal" style="margin: 5px;" type="text" name="second" id="2" class="input" value=""><br>
                 <input class="OneViewModal" style="margin: 5px;" type="text" name="third" id="3" class="input" value=""><br>
-                <input class="OneViewModal" style="margin: 5px; padding: 5px 12px; background-color: #f68c1e; color: white; font-size: 16px; border-radius: 4px" type="submit" value="Analyze">
+                <input class="OneViewModal" style="margin: 5px; padding: 5px 12px; background-color: #f68c1e; color: white; font-size:  16px; border-radius: 4px" type="submit" value="Analyze">
                 </form>
             </div>`;
     document.body.appendChild(modal);
@@ -88,9 +88,9 @@ function userInputModal(rawURL, path) {
         event.preventDefault();
 
         // alert('submitted');
-        const input1 = document.getElementById('1').value;
-        const input2 = document.getElementById('2').value;
-        const input3 = document.getElementById('3').value;
+        let input1 = document.getElementById('1').value;
+        let input2 = document.getElementById('2').value;
+        let input3 = document.getElementById('3').value;
         const keywords = [];
         if (input1) {
             keywords.push(input1);
@@ -101,6 +101,7 @@ function userInputModal(rawURL, path) {
         if (input3) {
             keywords.push(input3);
         }
+        // document.getElementById('queryForm').reset();
         console.log(dialog);
         dialog.close();
         removeListeners();
@@ -173,6 +174,7 @@ function AJAXRequest(ASIN, keywords) {
 }
 
 function parseData(data) {
+    console.log(data);
 
     const loadingModal = document.getElementById("loadModal");
     loadingModal.close();
@@ -260,15 +262,19 @@ function printData(score, matchedReviews, targets, usage) {
 
             
             
-            <button id="loginButton">Login</button>
-            <button id="signupButton">New User</button>
+            
+            <div class="OneViewModal" id="bottomLeft">
+                <button id="loginButton">Login</button>
+                <button id="signupButton">New User</button>
+                <button id="logoutButton">Logout</button>
+                <div id="userPrint"></div>
+            </div>
             <div class="OneViewModal" id="tag">
                 <button id="tagButton">Add Tags</button>
                 <div id="formContainer">
                     <form class="OneViewModal" id="tagForm"> 
                         <input class="OneViewModal" type="text" name="first" id="tag1" class="tagInput" value="">
                         <input class="OneViewModal" type="text" name="second" id="tag2" class="tagInput" value="">
-                        <input class="OneViewModal" type="text" name="second" id="tag3" class="tagInput" value="">
                     </form>
                 </div>
                 <button class="OneViewModal" type="submit" id="saveButton" form="tagForm">Save Reviews</button>
@@ -290,21 +296,37 @@ function printData(score, matchedReviews, targets, usage) {
     function printButtons() {
         // localStorage.oneViewID = 3;
 
-        if (localStorage.oneViewID) {
+        if (localStorage.oneViewID && localStorage.oneViewUsername) {
             //will determine which buttons are visible and which are displayed
             const saveButton = document.getElementById('saveButton');
             saveButton.style.display = 'block';
             const tagButton = document.getElementById('tagButton');
             tagButton.style.display = 'block';
+            const userPrint = document.getElementById('userPrint');
+            userPrint.style.display = 'block';
+            userPrint.innerHTML = `Hi, ${localStorage.oneViewUsername}!`;
             const loginButton = document.getElementById('loginButton');
             loginButton.style.display = 'none';
-            const singupButton = document.getElementById('signupButton');
-            singupButton.style.display = 'none';
+            const signupButton = document.getElementById('signupButton');
+            signupButton.style.display = 'none';
+            const logoutButton = document.getElementById('logoutButton');
+            logoutButton.style.display = 'block';
+            
         } else {
             const loginButton = document.getElementById('loginButton');
             loginButton.style.display = 'block';
-            const singupButton = document.getElementById('signupButton');
-            singupButton.style.display = 'block';
+            const signupButton = document.getElementById('signupButton');
+            signupButton.style.display = 'block';
+            const saveButton = document.getElementById('saveButton');
+            saveButton.style.display = 'none';
+            const tagButton = document.getElementById('tagButton');
+            tagButton.style.display = 'none';
+            tagContainer = document.getElementById('formContainer');
+            tagContainer.style.display = 'none';
+            const userPrint = document.getElementById('userPrint');
+            userPrint.style.display = 'none';
+            const logoutButton = document.getElementById('logoutButton');
+            logoutButton.style.display = 'none';
         }
     }
 
@@ -377,9 +399,12 @@ function printData(score, matchedReviews, targets, usage) {
         reviews.parentNode.removeChild(reviews);
     }
     const _parseClick = event => {
-
         console.log(event.target);
-        if (event.target.id === "loginButton") {
+        if (event.target.id === "logoutButton") {
+            localStorage.removeItem('oneViewUsername'); 
+            localStorage.removeItem('oneViewID');
+            printButtons(); 
+        } else if (event.target.id === "loginButton") {
             loginModal();
         } else if (event.target.id === "signupButton") {
             console.log("signupButton pressed");
@@ -387,8 +412,8 @@ function printData(score, matchedReviews, targets, usage) {
         } else if (event.target.id === "tagButton") {
             const tagButton = document.getElementById('tagButton');
             tagButton.style.display = 'none';
-            const tagForm = document.getElementById('formContainer');
-            tagForm.style.display = 'block';
+            const tagContainer = document.getElementById('formContainer');
+            tagContainer.style.display = 'block';
         } else if (event.target.id === "saveButton") {
             saveTags();
         } else if (event.target.id === "signupModal" || event.target.id === "loginModal") {
@@ -524,9 +549,14 @@ function printData(score, matchedReviews, targets, usage) {
             // alert('submitted');
             const username = document.getElementById('logUser').value;
             const password = document.getElementById('logPass').value;
+            if (!username || !password) {
+                return alert("Username and Password required");
+            }
             loginDialog.close();
             removeListeners();
             getUser(username, password);
+            // username = '';
+            // password = '';
         }
         loginDialog.querySelector("form").addEventListener("submit", _formSubmit);
 
@@ -588,14 +618,19 @@ function printData(score, matchedReviews, targets, usage) {
             const username = document.getElementById('signUser').value;
             const password = document.getElementById('signPass').value;
             const confirmPass = document.getElementById('signConfirm').value;
-            if (!(username && password && confirmPass)) {
+
+            if (!username || !password || !confirmPass) {
                 return alert('Please fill out all fields');
+            } else if (username.length > 8) {
+                return alert("Keep usernames to 8 characters. We're not that fancy around here!");
             } else if (password != confirmPass) {
                 return alert('Passwords do not match');
             }
             signupDialog.close();
             removeListeners();
             postUser(username, password);
+            // username = '';
+            // password = '';
         }
         signupDialog.querySelector("form").addEventListener("submit", _formSubmit);
 
@@ -663,6 +698,7 @@ function printData(score, matchedReviews, targets, usage) {
             return alert('Username already exists');
         }
         localStorage.oneViewID = data._id;
+        localStorage.oneViewUsername = data.username;
         printButtons();
     }
 
