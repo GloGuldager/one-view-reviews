@@ -37,19 +37,19 @@ chrome.runtime.onMessage.addListener(
 function userInputModal(rawURL, path) {
     //toggle this path on if you want to bypass the server and just work on dummy data in the Results Modal
 
-    dummyTargetResults = [
-        { 'text': 'value', 'score': 0.432 }, { 'text': 'quality', 'score': 0.034 }, { 'text': 'value', 'score': -0.432 }, { 'text': 'quality', 'score': 0.234 }, { 'text': 'longer query', 'score': 0.634 }
-    ]
-    dummyReviewArray = [
-        { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
-        { 'reviewTitle': 'A totally different title!', 'reviewText': 'Amazing donut revenge never saw me coming left on Polaski Highway all the way to heaven if several small discombobulated loners never once said hi when they went to sleep I could never live it down no never live it down now let me be.' },
-        { 'reviewTitle': 'This is what it looks like if somebody puts way too much text in the title!', 'reviewText': 'And nothing in body.' },
-        { 'reviewTitle': 'Ok', 'reviewText': 'This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. ' },
-        { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
-        { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' }
-    ];
-    const usage = 37777;
-    return printData(82, dummyReviewArray, dummyTargetResults, usage);
+    // dummyTargetResults = [
+    //     { 'text': 'value', 'score': 0.432 }, { 'text': 'quality', 'score': 0.034 }, { 'text': 'value', 'score': -0.432 }, { 'text': 'quality', 'score': 0.234 }, { 'text': 'longer query', 'score': 0.634 }
+    // ]
+    // dummyReviewArray = [
+    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
+    //     { 'reviewTitle': 'A totally different title!', 'reviewText': 'Amazing donut revenge never saw me coming left on Polaski Highway all the way to heaven if several small discombobulated loners never once said hi when they went to sleep I could never live it down no never live it down now let me be.' },
+    //     { 'reviewTitle': 'This is what it looks like if somebody puts way too much text in the title!', 'reviewText': 'And nothing in body.' },
+    //     { 'reviewTitle': 'Ok', 'reviewText': 'This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. This is a very long review text. ' },
+    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' },
+    //     { 'reviewTitle': 'This is amazing!', 'reviewText': 'I love having this garden gnome. I say hi to him every morning, and he makes my dog eat cheese! I could not live without him, he is my special boy!' }
+    // ];
+    // const usage = 37777;
+    // return printData(82, dummyReviewArray, dummyTargetResults, usage);
 
     const modal = document.createElement('dialog');
     modal.setAttribute("style", "height:350px");
@@ -88,25 +88,24 @@ function userInputModal(rawURL, path) {
         event.preventDefault();
 
         // alert('submitted');
-        let input1 = document.getElementById('1').value;
-        let input2 = document.getElementById('2').value;
-        let input3 = document.getElementById('3').value;
+        let keyword1 = document.getElementById('1').value;
+        let keyword2 = document.getElementById('2').value;
+        let keyword3 = document.getElementById('3').value;
         const keywords = [];
-        if (input1) {
-            keywords.push(input1);
+        if (keyword1) {
+            keywords.push(keyword1);
         }
-        if (input2) {
-            keywords.push(input2);
+        if (keyword2) {
+            keywords.push(keyword2);
         }
-        if (input3) {
-            keywords.push(input3);
+        if (keyword3) {
+            keywords.push(keyword3);
         }
-        // document.getElementById('queryForm').reset();
-        console.log(dialog);
+        document.getElementById('queryForm').reset();
+
         dialog.close();
         removeListeners();
         createLoadModal(rawURL, path, keywords);
-        // getASIN(rawURL, path, keywords);
     }
     dialog.querySelector("form").addEventListener("submit", _formSubmit);
 
@@ -144,22 +143,23 @@ function createLoadModal(rawURL, path, keywords) {
 }
 
 function getASIN(rawURL, path, keywords) {
+
     const splitASIN = rawURL.split(path)[1];
     const ASIN = splitASIN.substring(0, 10);
-    console.log(ASIN);
+    // console.log(ASIN);
 
     AJAXRequest(ASIN, keywords);
 }
 
 function AJAXRequest(ASIN, keywords) {
 
-    var url = 'http://localhost:3000/api/post';
-    // var url = 'https://one-view-reviews-api.herokuapp.com/api/post';
+    // var url = 'http://localhost:3000/api/post';
+    var url = 'https://one-view-reviews-api.herokuapp.com/api/post';
     var data = {
         "ASIN": ASIN,
         "keywords": keywords
     };
-    console.log(data);
+    // console.log(data);
     fetch(url, {
         method: 'POST', // or 'PUT'
         headers: {
@@ -181,7 +181,7 @@ function parseData(data) {
 
     const overallSentiment = data.analysis.sentiment.document.score;
     const overallScore = Math.floor(overallSentiment * 50 + 50);
-    console.log(overallScore);
+    // console.log(overallScore);
 
     const targetSentiments = data.analysis.sentiment.targets;
 
@@ -199,7 +199,7 @@ function printData(score, matchedReviews, targets, usage) {
     printModal.innerHTML =
         `<iframe class="OneViewModal" id="printIFrame" style="height:100%;"></iframe>
             <div id="exitButtonDiv" class="OneViewModal">  
-                <button class="OneViewModal" id="exitButton">x</button>
+                <button class="OneViewModal" id="closePrintModal">x</button>
             </div>
         <div class="OneViewModal" id="container">
             <div class="OneViewModal" id="header" class="OneViewModal">
@@ -260,9 +260,6 @@ function printData(score, matchedReviews, targets, usage) {
 
             <div class="OneViewModal" id="topReviews"></div>
 
-            
-            
-            
             <div class="OneViewModal" id="bottomLeft">
                 <button id="loginButton">Login</button>
                 <button id="signupButton">New User</button>
@@ -311,7 +308,7 @@ function printData(score, matchedReviews, targets, usage) {
             signupButton.style.display = 'none';
             const logoutButton = document.getElementById('logoutButton');
             logoutButton.style.display = 'block';
-            
+
         } else {
             const loginButton = document.getElementById('loginButton');
             loginButton.style.display = 'block';
@@ -397,17 +394,25 @@ function printData(score, matchedReviews, targets, usage) {
         removeListeners();
         const reviews = document.getElementById("allReviewContainer");
         reviews.parentNode.removeChild(reviews);
+        for (let i = 0; i < 5; i++) {
+            const chartVal = document.getElementById(`chart${i}`);
+            chartVal.style.height = `0px`;
+            chartVal.innerHTML = '';
+
+            const chartText = document.getElementById(`chart${i}text`);
+            chartText.innerHTML = '';
+        }
     }
     const _parseClick = event => {
-        console.log(event.target);
+        // console.log(event.target);
         if (event.target.id === "logoutButton") {
-            localStorage.removeItem('oneViewUsername'); 
+            localStorage.removeItem('oneViewUsername');
             localStorage.removeItem('oneViewID');
-            printButtons(); 
+            printButtons();
         } else if (event.target.id === "loginButton") {
             loginModal();
         } else if (event.target.id === "signupButton") {
-            console.log("signupButton pressed");
+            // console.log("signupButton pressed");
             signupModal();
         } else if (event.target.id === "tagButton") {
             const tagButton = document.getElementById('tagButton');
@@ -420,7 +425,7 @@ function printData(score, matchedReviews, targets, usage) {
             return;
         }
         else if (!(event.target.className === "OneViewModal" || event.target.className === "OneViewModal reviewTitles"
-            || event.target.className === "OneViewModal reviewText" || event.target.className === "OneViewModal chartValues") || event.target.id === "exitButton") {
+            || event.target.className === "OneViewModal reviewText" || event.target.className === "OneViewModal chartValues") || event.target.id === "closePrintModal") {
             exitReset();
         }
     }
@@ -452,8 +457,8 @@ function printData(score, matchedReviews, targets, usage) {
 
     function saveSearch(score, matchedReviews, targets, usage, tags) {
         // console.log(ASIN);
-        var url = `http://localhost:3000/api/savereviews/${localStorage.oneViewID}`;
-        // var url = `https://one-view-reviews-api.herokuapp.com/api/reviews/${id}`;
+        // var url = `http://localhost:3000/api/savereviews/${localStorage.oneViewID}`;
+        var url = `https://one-view-reviews-api.herokuapp.com/api/reviews/${localStorage.oneViewID}`;
         var data = {
             "score": score,
             "reviews": matchedReviews,
@@ -461,7 +466,7 @@ function printData(score, matchedReviews, targets, usage) {
             "usage": usage,
             "tags": tags
         };
-        console.log(data);
+        // console.log(data);
         fetch(url, {
             method: 'POST', // or 'PUT'
             headers: {
@@ -474,7 +479,7 @@ function printData(score, matchedReviews, targets, usage) {
             .catch(error => alert('Save failed'));
     }
 
-    function successModal () {
+    function successModal() {
         const successModal = document.createElement('dialog');
         successModal.setAttribute("style", "height:180px");
         successModal.setAttribute("id", "successModal");
@@ -578,7 +583,7 @@ function printData(score, matchedReviews, targets, usage) {
     }
 
     function signupModal() {
-        console.log("in signup Modal");
+        // console.log("in signup Modal");
         const signupModal = document.createElement('dialog');
         signupModal.setAttribute("style", "height:310px");
         signupModal.setAttribute("id", "signupModal");
@@ -652,13 +657,13 @@ function printData(score, matchedReviews, targets, usage) {
     }
 
     function getUser(username, password) {
-        var url = `http://localhost:3000/api/users/${username}`;
-        // var url = 'https://one-view-reviews-api.herokuapp.com/api/users';
+        // var url = `http://localhost:3000/api/users/${username}`;
+        var url = `https://one-view-reviews-api.herokuapp.com/api/users/${username}`;
         var data = {
             "username": username,
             "password": password
         };
-        console.log(data);
+        // console.log(data);
         fetch(url, {
             method: 'POST',
             headers: {
@@ -672,13 +677,13 @@ function printData(score, matchedReviews, targets, usage) {
     }
 
     function postUser(username, password) {
-        var url = 'http://localhost:3000/api/users';
-        // var url = 'https://one-view-reviews-api.herokuapp.com/api/users';
+        // var url = 'http://localhost:3000/api/users';
+        var url = 'https://one-view-reviews-api.herokuapp.com/api/users';
         var data = {
             "username": username,
             "password": password
         };
-        console.log(data);
+        // console.log(data);
         fetch(url, {
             method: 'POST', // or 'PUT'
             headers: {
@@ -692,8 +697,8 @@ function printData(score, matchedReviews, targets, usage) {
     }
 
     function saveLocalID(data) {
-        console.log('response received');
-        console.log(data);
+        // console.log('response received');
+        // console.log(data);
         if (data.code === 11000) {
             return alert('Username already exists');
         }

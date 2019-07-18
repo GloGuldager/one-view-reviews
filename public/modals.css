@@ -43,11 +43,12 @@ body {
     padding-top: 2px;
 }
 
-#exitButton {
+#closePrintModal {
     background-color: #f68c1e; 
     color: white; 
     font-size: 14px; 
     font-weight: bold;
+    
 }
 
 #header {
