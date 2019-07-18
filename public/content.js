@@ -485,7 +485,7 @@ function printData(score, matchedReviews, targets, usage) {
             <div class="OneViewModal" style="position:absolute; top: 10px; left:5px; margin: 5px; padding: 0px 20px">
                 <div class="OneViewModal" id="successText" style="height: 45px; border-bottom-style: dotted; border-width: 1px; border-color: rgba(43,57,144, 0.6)">Save Successful!</div>
                 <div class="OneViewModal" id="visitWebsite" style="margin-top: 15px; font-size: 24px; line-height: 1.8rem">
-                    Visit our <a href="OUR DEPLOYED URL NEEDS TO GO HERE DONT FORGET">WEBSITE</a> to see your saved reviews!
+                    Visit our <a href="https://one-view-reviews-web.herokuapp.com/saved">WEBSITE</a> to see your saved reviews!
                 </div>
             </div>`;
         document.body.appendChild(successModal);
