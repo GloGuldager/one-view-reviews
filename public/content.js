@@ -436,12 +436,10 @@ function printData(score, matchedReviews, targets, usage) {
         document.body.removeEventListener("click", _parseClick);
     }
 
-
     function saveTags() {
         event.preventDefault();
         const tag1 = document.getElementById('tag1').value;
         const tag2 = document.getElementById('tag2').value;
-        const tag3 = document.getElementById('tag3').value;
         const tags = [];
         if (tag1) {
             tags.push(tag1);
@@ -449,16 +447,13 @@ function printData(score, matchedReviews, targets, usage) {
         if (tag2) {
             tags.push(tag2);
         }
-        if (tag3) {
-            tags.push(tag3);
-        }
         saveSearch(score, matchedReviews, targets, usage, tags);
     }
 
     function saveSearch(score, matchedReviews, targets, usage, tags) {
         // console.log(ASIN);
         // var url = `http://localhost:3000/api/savereviews/${localStorage.oneViewID}`;
-        var url = `https://one-view-reviews-api.herokuapp.com/api/reviews/${localStorage.oneViewID}`;
+        var url = `https://one-view-reviews-api.herokuapp.com/api/savereviews/${localStorage.oneViewID}`;
         var data = {
             "score": score,
             "reviews": matchedReviews,
@@ -588,7 +583,7 @@ function printData(score, matchedReviews, targets, usage) {
         signupModal.setAttribute("style", "height:310px");
         signupModal.setAttribute("id", "signupModal");
         signupModal.innerHTML =
-            `<iframe class="OneViewModal" id="keywordInput" style="height:100%;"></iframe>
+            `<iframe class="OneViewModal" id="signupIFrame" style="height:100%;"></iframe>
             <div class="OneViewModal" style="position:absolute; top:1px; left:1px; padding: 3px; padding-top: 2px;">  
                 <button class="OneViewModal" id="closeSignup" style="background-color: #f68c1e; color: white; font-size: 14px; font-weight: bold;">x</button>
             </div>
@@ -608,8 +603,8 @@ function printData(score, matchedReviews, targets, usage) {
         signupDialog.showModal();
 
 
-        const iframe = document.getElementById("keywordInput");
-        iframe.frameBorder = 0;
+        const signupiframe = document.getElementById("signupIFrame");
+        signupiframe.frameBorder = 0;
 
         signupDialog.querySelector("#closeSignup").addEventListener("click", () => {
             signupDialog.close();
