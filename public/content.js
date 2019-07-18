@@ -1,3 +1,4 @@
+let ASIN = '';
 
 chrome.runtime.onMessage.addListener(
     function (request) {
@@ -23,7 +24,7 @@ chrome.runtime.onMessage.addListener(
                 const path = '/asin/';
                 userInputModal(rawURL, path);
 
-            } else if (rawURL.includes('/asin/')) {
+            } else if (rawURL.includes('/gp/aw/d/')) {
                 const path = '/gp/aw/d/';
                 userInputModal(rawURL, path);
 
@@ -145,7 +146,7 @@ function createLoadModal(rawURL, path, keywords) {
 function getASIN(rawURL, path, keywords) {
 
     const splitASIN = rawURL.split(path)[1];
-    const ASIN = splitASIN.substring(0, 10);
+    ASIN = splitASIN.substring(0, 10);
     // console.log(ASIN);
 
     AJAXRequest(ASIN, keywords);
@@ -451,7 +452,7 @@ function printData(score, matchedReviews, targets, usage) {
     }
 
     function saveSearch(score, matchedReviews, targets, usage, tags) {
-        // console.log(ASIN);
+        console.log(ASIN);
         // var url = `http://localhost:3000/api/savereviews/${localStorage.oneViewID}`;
         var url = `https://one-view-reviews-api.herokuapp.com/api/savereviews/${localStorage.oneViewID}`;
         var data = {
@@ -459,7 +460,8 @@ function printData(score, matchedReviews, targets, usage) {
             "reviews": matchedReviews,
             "targets": targets,
             "usage": usage,
-            "tags": tags
+            "tags": tags,
+            "ASIN": `https://www.amazon.com/dp/${ASIN}`
         };
         // console.log(data);
         fetch(url, {
