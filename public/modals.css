@@ -22,7 +22,7 @@ body {
         "- - - - - - - - - - - -"
         "c c c c c c c c c c c c"
         "r r r r r r r r r r r r"
-        "lg lg sg sg t t t t t t t t";
+        "g g g g g t t t t t t t";
     position: absolute;
     top: 0px;
     left: 0px;
@@ -227,24 +227,43 @@ h5 {
 }
 /* ------------------------------------------------------------------------------- */
 
-
+#bottomLeft {
+    grid-area: g;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: flex-start;
+}
 #loginButton {
-    grid-area: lg;
     background-color: rgb(85, 85, 207);
     color: white;
     border-radius: 8px;
-    padding: 2px 5px;
+    padding: 4px 10px;
     display: none;
     margin: 8px 5px 5px 12px;
 }
+#logoutButton {
+    background-color: rgb(197, 33, 142);
+    color: white;
+    border-radius: 8px;
+    padding: 2px 8px;
+    display: none;
+    margin: 8px 3px 5px 10px;
+}
 #signupButton {
-    grid-area: sg;
     background-color: #f68c1e;
     color: white;
     border-radius: 8px;
-    padding: 2px 5px;
+    padding: 2px 8px;
     display: none;
     margin: 8px 5px 5px 5px;
+}
+#userPrint {
+    padding: 4px 0px;
+    display: none;
+    margin: 8px 5px 5px 5px;
+    font-size: 20px;
+    color: #2b3990;
+    font-weight: 600;
 }
 #tag {
     grid-area: t;
